@@ -1,93 +1,141 @@
 {{define "content"}}
-<div style="text-align: center; padding: 60px 0 40px 0;">
-  <span class="badge badge-success" style="margin-bottom: 16px; font-size: 0.85rem; padding: 6px 14px;">🚀 India's Fastest Peer-to-Peer Wallet</span>
-  <h1 style="font-size: 3.2rem; font-weight: 800; line-height: 1.15; max-width: 800px; margin: 0 auto 20px auto; color: var(--ink);">
+<div style="text-align: center; padding: 70px 0 50px 0;">
+  <!-- Ambient Top Badge -->
+  <div style="display: inline-flex; align-items: center; gap: 8px; background: var(--primary-tint); border: 1px solid rgba(101, 219, 176, 0.4); border-radius: 9999px; padding: 6px 18px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(101, 219, 176, 0.2);">
+    <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary-bright); box-shadow: 0 0 8px var(--primary-bright);"></span>
+    <span style="font-size: 0.85rem; font-weight: 700; color: var(--primary-bright); text-transform: uppercase; letter-spacing: 0.05em;">India's Premier Neobank Digital Wallet</span>
+  </div>
+
+  <h1 style="font-size: 3.6rem; font-weight: 800; line-height: 1.1; max-width: 850px; margin: 0 auto 24px auto; color: #FFFFFF; letter-spacing: -0.03em;">
     Money that moves as fast as your friends.
   </h1>
-  <p style="font-size: 1.25rem; color: var(--muted); max-width: 600px; margin: 0 auto 32px auto;">
-    Send, split, request, and withdraw money instantly with zero hassle. Join millions paying with @handles.
+  <p style="font-size: 1.25rem; color: var(--muted); max-width: 640px; margin: 0 auto 36px auto; line-height: 1.6;">
+    Send, split, request, and withdraw money instantly with zero friction. Experience CRED-grade luxury meets Revolut speed for everyday peer-to-peer payments.
   </p>
-  <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 50px;">
-    <a href="/signup" class="btn btn-primary" style="height: 52px; padding: 0 32px; font-size: 1.1rem;">Get Started for Free</a>
-    <a href="/fees" class="btn btn-outline" style="height: 52px; padding: 0 24px; font-size: 1.1rem;">View Fees & Limits</a>
+
+  <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap;">
+    <a href="/signup" class="btn btn-primary" style="height: 52px; padding: 0 36px; font-size: 1.05rem;">Open Free Account</a>
+    <a href="/fees" class="btn btn-outline" style="height: 52px; padding: 0 28px; font-size: 1.05rem;">Explore Fees & Limits</a>
   </div>
 
-  <!-- App Hero Mockup in Pure HTML/CSS -->
-  <div style="max-width: 380px; margin: 0 auto; background: var(--surface); border-radius: 36px; padding: 16px; box-shadow: var(--shadow-lg); border: 8px solid #0E1726;">
-    <div style="background: linear-gradient(135deg, #0B3D2E 0%, #0F9D76 60%, #34D399 100%); border-radius: 24px; padding: 24px; color: white; text-align: left;">
-      <div style="font-size: 0.8rem; opacity: 0.9;">Pocketa Wallet Balance</div>
-      <div style="font-size: 2.2rem; font-weight: 700; margin: 8px 0 16px 0;">₹48,300.00</div>
-      <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-        <span>@arjun.m</span>
-        <span>Verified ✓</span>
+  <!-- High-End App Hero Mockup in Pure HTML/CSS -->
+  <div style="max-width: 420px; margin: 0 auto; background: rgba(16, 20, 19, 0.85); backdrop-filter: blur(24px); border-radius: 40px; padding: 20px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(15, 157, 118, 0.25); border: 2px solid rgba(101, 219, 176, 0.35);">
+    <!-- Inner Screen -->
+    <div style="background: linear-gradient(135deg, rgba(11, 61, 46, 0.95) 0%, rgba(15, 157, 118, 0.7) 60%, rgba(52, 211, 153, 0.35) 100%); border-radius: 28px; padding: 24px; color: white; text-align: left; box-shadow: inset 0 1px 2px rgba(255,255,255,0.3); border: 1px solid rgba(101, 219, 176, 0.4);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div class="emv-chip" style="transform: scale(0.85); transform-origin: left center;"></div>
+        <div style="font-size: 0.7rem; font-weight: 800; color: var(--primary-bright); letter-spacing: 0.1em;">PLATINUM TITANIUM</div>
+      </div>
+      <div style="font-size: 0.8rem; opacity: 0.85;">Total Net Balance</div>
+      <div style="font-size: 2.4rem; font-weight: 800; font-family: var(--font-sans); margin: 6px 0 16px 0; letter-spacing: -0.02em;">₹48,300.00</div>
+      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px;">
+        <span style="font-family: var(--font-mono);">@arjun.m</span>
+        <span style="color: var(--primary-bright); font-weight: 700;">Verified Tier-2 ✓</span>
       </div>
     </div>
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 16px;">
-      <div style="background: var(--bg); padding: 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">➕ Top-up</div>
-      <div style="background: var(--bg); padding: 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">💸 Send</div>
-      <div style="background: var(--bg); padding: 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">🤲 Split</div>
-      <div style="background: var(--bg); padding: 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">🏦 Bank</div>
+
+    <!-- Quick action buttons -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px;">
+      <div style="background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 12px 6px; border-radius: 14px; font-size: 0.75rem; font-weight: 700; text-align: center;">
+        <div style="font-size: 1.2rem; margin-bottom: 4px;">➕</div>
+        <span>Top-up</span>
+      </div>
+      <div style="background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 12px 6px; border-radius: 14px; font-size: 0.75rem; font-weight: 700; text-align: center;">
+        <div style="font-size: 1.2rem; margin-bottom: 4px;">💸</div>
+        <span>Send @</span>
+      </div>
+      <div style="background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 12px 6px; border-radius: 14px; font-size: 0.75rem; font-weight: 700; text-align: center;">
+        <div style="font-size: 1.2rem; margin-bottom: 4px;">🤲</div>
+        <span>Split</span>
+      </div>
+      <div style="background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 12px 6px; border-radius: 14px; font-size: 0.75rem; font-weight: 700; text-align: center;">
+        <div style="font-size: 1.2rem; margin-bottom: 4px;">🏦</div>
+        <span>Withdraw</span>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Features -->
-<div style="padding: 60px 0; border-top: 1px solid var(--line);">
-  <h2 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Why people love Pocketa</h2>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
-    <div class="card">
-      <div style="font-size: 2.5rem; margin-bottom: 12px;">⚡</div>
-      <h3 style="font-size: 1.2rem; margin-bottom: 8px;">Instant @Handle Transfers</h3>
-      <p style="color: var(--muted); font-size: 0.95rem;">No bank account numbers or IFSC codes required. Just type @riya.s and send money in 1 tap.</p>
+<!-- Features Section -->
+<div style="padding: 80px 0; border-top: 1px solid var(--line);">
+  <div style="text-align: center; max-width: 600px; margin: 0 auto 50px auto;">
+    <h2 style="font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px;">Engineered for modern India</h2>
+    <p style="color: var(--muted); font-size: 1.05rem;">Everything you need to manage peer-to-peer payments, shared expenses, and instant bank cashouts.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+    <div class="glass-panel" style="padding: 32px;">
+      <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; border: 1px solid rgba(101, 219, 176, 0.3);">
+        ⚡
+      </div>
+      <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px;">Instant @Handle Transfers</h3>
+      <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6;">Say goodbye to tedious bank account numbers and IFSC lookups. Send money to any friend instantly using clean custom handles like @riya.s.</p>
     </div>
-    <div class="card">
-      <div style="font-size: 2.5rem; margin-bottom: 12px;">🍕</div>
-      <h3 style="font-size: 1.2rem; margin-bottom: 8px;">Seamless Bill Splitting</h3>
-      <p style="color: var(--muted); font-size: 0.95rem;">Split dinner, trip expenses, or rent among friends effortlessly with live math calculation.</p>
+
+    <div class="glass-panel" style="padding: 32px;">
+      <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--secondary-tint); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; border: 1px solid rgba(69, 223, 164, 0.3);">
+        🍕
+      </div>
+      <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px;">Intelligent Bill Splitting</h3>
+      <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6;">Split dinners, travel tickets, or flat rent among multiple friends in one click. Pocketa distributes remainder paise fairly and dispatches requests automatically.</p>
     </div>
-    <div class="card">
-      <div style="font-size: 2.5rem; margin-bottom: 12px;">🏦</div>
-      <h3 style="font-size: 1.2rem; margin-bottom: 8px;">Direct Bank Withdrawals</h3>
-      <p style="color: var(--muted); font-size: 0.95rem;">Withdraw funds to any Indian bank (HDFC, ICICI, SBI, Axis, Kotak) instantly for flat ₹2.</p>
+
+    <div class="glass-panel" style="padding: 32px;">
+      <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--tertiary-tint); color: var(--tertiary); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; border: 1px solid rgba(233, 195, 73, 0.3);">
+        🏦
+      </div>
+      <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px;">Flat ₹2 Bank Withdrawals</h3>
+      <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6;">Withdraw your balance directly to HDFC, ICICI, SBI, Axis, or Kotak via IMPS instant settlements. Completely transparent flat ₹2.00 fee.</p>
     </div>
   </div>
 </div>
 
-<!-- How It Works -->
-<div style="padding: 60px 0; background: var(--surface); border-radius: var(--radius-lg); margin: 40px 0; padding: 40px;">
-  <h2 style="text-align: center; font-size: 2rem; margin-bottom: 30px;">3 simple steps to get started</h2>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; text-align: center;">
+<!-- 3-Step How It Works -->
+<div class="glass-panel" style="margin: 40px 0; padding: 50px 40px;">
+  <h2 style="text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 40px;">Get up and running in 3 simple steps</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; text-align: center;">
     <div>
-      <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-tint); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; margin: 0 auto 16px auto;">1</div>
-      <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Create an Account</h3>
-      <p style="color: var(--muted); font-size: 0.9rem;">Sign up in under 30 seconds with your mobile number and pick your custom handle.</p>
+      <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; margin: 0 auto 16px auto; border: 1px solid var(--primary-bright);">1</div>
+      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px;">Claim Your Handle</h3>
+      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">Pick your unique Pocketa handle and register in under 30 seconds with instant basic KYC.</p>
     </div>
     <div>
-      <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-tint); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; margin: 0 auto 16px auto;">2</div>
-      <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Add Money to Wallet</h3>
-      <p style="color: var(--muted); font-size: 0.9rem;">Top up instantly via UPI, Debit Card, or Netbanking with zero fees.</p>
+      <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; margin: 0 auto 16px auto; border: 1px solid var(--primary-bright);">2</div>
+      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px;">Zero-Fee Top-Up</h3>
+      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">Load funds into your digital wallet instantly via UPI, debit card, or netbanking with 0% fee.</p>
     </div>
     <div>
-      <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-tint); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; margin: 0 auto 16px auto;">3</div>
-      <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Transact & Enjoy</h3>
-      <p style="color: var(--muted); font-size: 0.9rem;">Send money to anyone, request pending amounts, or cash out to your bank.</p>
+      <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; margin: 0 auto 16px auto; border: 1px solid var(--primary-bright);">3</div>
+      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px;">Transact Freely</h3>
+      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">Send money to anyone, settle split requests, or cash out to your primary bank account.</p>
     </div>
   </div>
 </div>
 
 <!-- Testimonials -->
-<div style="padding: 40px 0;">
-  <h2 style="text-align: center; font-size: 2rem; margin-bottom: 30px;">Trusted by 500,000+ users across India</h2>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-    <div class="card">
-      <p style="margin-bottom: 16px;">"Pocketa made splitting Goa trip expenses so smooth. Everyone paid back in minutes using their handles!"</p>
-      <div style="font-weight: 600;">— Riya Sharma</div>
-      <div style="font-size: 0.8rem; color: var(--muted);">Mumbai</div>
+<div style="padding: 40px 0 80px 0;">
+  <h2 style="text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 40px;">Trusted by 500,000+ members</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+    <div class="glass-panel" style="padding: 28px;">
+      <p style="font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px;">"Pocketa completely replaced Splitwise and UPI apps for our friend circle. We split dinner and fuel in seconds without calculating change."</p>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-weight: 800;">R</div>
+        <div>
+          <div style="font-weight: 700;">Riya Sharma</div>
+          <div style="font-size: 0.8rem; color: var(--muted);">Product Lead • Mumbai</div>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <p style="margin-bottom: 16px;">"The bank withdrawal speed is unmatched. Flat ₹2 fee and money hits my HDFC account instantly."</p>
-      <div style="font-weight: 600;">— Arjun Mehta</div>
-      <div style="font-size: 0.8rem; color: var(--muted);">Bengaluru</div>
+
+    <div class="glass-panel" style="padding: 28px;">
+      <p style="font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px;">"The bank withdrawal speed is astonishing. Flat ₹2 fee and the money reflects in my HDFC account before I close the app. Incredible engineering."</p>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--secondary-tint); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-weight: 800;">A</div>
+        <div>
+          <div style="font-weight: 700;">Arjun Mehta</div>
+          <div style="font-size: 0.8rem; color: var(--muted);">Engineering Manager • Bengaluru</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

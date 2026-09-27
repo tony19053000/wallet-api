@@ -4,63 +4,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{.Title}} — Pocketa</title>
+  <title>{{.Title}} — Pocketa | Exclusive Wealth & Neobank</title>
   <link rel="stylesheet" href="/static/style.css">
   <script src="/static/app.js" defer></script>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Desktop Left Rail Navigation -->
-    <aside class="desktop-rail card" style="display: flex; flex-direction: column; justify-content: space-between; height: calc(100vh - 40px); position: sticky; top: 20px;">
-      <div>
-        <a href="/app" class="brand" style="margin-bottom: 32px; display: flex;">
-          <div class="brand-icon">P</div>
-          <span>Pocketa</span>
+  <!-- Top Ambient Navigation Bar (Stitch TopBar Component) -->
+  <header style="position: sticky; top: 0; z-index: 50; width: 100%; background: rgba(11, 15, 14, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); padding: 12px 24px;">
+    <div style="max-width: 1380px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+      <!-- Mobile brand trigger -->
+      <a href="/app" class="brand" style="font-size: 1.25rem;">
+        <div class="brand-icon" style="width: 32px; height: 32px; font-size: 0.95rem;">P</div>
+        <span>Pocketa</span>
+      </a>
+
+      <!-- Omnisearch Bar with ⌘K badge -->
+      <div style="flex: 1; max-width: 480px; position: relative; display: flex; align-items: center;">
+        <span style="position: absolute; left: 14px; color: var(--muted); font-size: 0.95rem;">🔍</span>
+        <input type="text" class="form-control" style="height: 40px; padding-left: 40px; padding-right: 50px; font-size: 0.875rem; border-radius: 10px;" placeholder="Search transactions, @pocketa handles, bank accounts..." onkeydown="if(event.key==='Enter') window.location.href='/app/activity?q='+encodeURIComponent(this.value);">
+        <div style="position: absolute; right: 10px; background: rgba(61, 74, 67, 0.5); padding: 2px 6px; border-radius: 6px; font-size: 0.75rem; font-family: var(--font-mono); color: var(--muted);">⌘K</div>
+      </div>
+
+      <!-- Action Cluster -->
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <!-- Currency Pill -->
+        <div style="display: flex; align-items: center; gap: 6px; background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary-bright);"></span>
+          <span>INR (₹)</span>
+        </div>
+
+        <!-- Scan UPI QR -->
+        <a href="/app/send" class="btn btn-secondary" style="height: 38px; padding: 0 14px; font-size: 0.85rem; gap: 6px;">
+          <span>📷</span> Scan QR
         </a>
 
-        <nav style="display: flex; flex-direction: column; gap: 8px;">
-          <a href="/app" class="btn {{if eq .Page "home"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
-            <span>🏠</span> Home
+        <!-- Notification Bell -->
+        <div style="position: relative; cursor: pointer; padding: 6px; color: var(--ink);" onclick="showToast('You are caught up! Zero unread notifications.')">
+          <span>🔔</span>
+          <span style="position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; background: var(--secondary); box-shadow: 0 0 6px var(--secondary);"></span>
+        </div>
+
+        <!-- Mini Avatar -->
+        <div style="width: 34px; height: 34px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); border: 1.5px solid var(--primary-bright); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+          {{slice .User.Name 0 1}}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- Desktop Left Rail Navigation (Stitch SideBar Component) -->
+    <aside class="desktop-rail glass-panel" style="display: flex; flex-direction: column; justify-content: space-between; height: calc(100vh - 100px); position: sticky; top: 80px; padding: 20px;">
+      <div>
+        <nav style="display: flex; flex-direction: column; gap: 6px;">
+          <a href="/app" class="btn {{if eq .Page "home"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
+            <span>⚡</span> Overview
           </a>
-          <a href="/app/send" class="btn {{if eq .Page "send"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
-            <span>💸</span> Send
+          <a href="/app/send" class="btn {{if eq .Page "send"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
+            <span>💸</span> Send Money
           </a>
-          <a href="/app/request" class="btn {{if eq .Page "request"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
-            <span>🤲</span> Request & Split
+          <a href="/app/request" class="btn {{if eq .Page "request"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
+            <span>🤲</span> Split & Requests
           </a>
-          <a href="/app/requests" class="btn {{if eq .Page "requests"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
-            <span>📩</span> Requests
+          <a href="/app/requests" class="btn {{if eq .Page "requests"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
+            <span>📩</span> Manage Requests
           </a>
-          <a href="/app/activity" class="btn {{if eq .Page "activity"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
-            <span>📊</span> Activity
+          <a href="/app/activity" class="btn {{if eq .Page "activity"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
+            <span>📊</span> Activity Ledger
           </a>
-          <a href="/app/banks" class="btn {{if eq .Page "banks"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
+          <a href="/app/banks" class="btn {{if eq .Page "banks"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
             <span>🏦</span> Bank Accounts
           </a>
-          <a href="/app/profile" class="btn {{if eq .Page "profile"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
-            <span>👤</span> Profile
+          <a href="/app/profile" class="btn {{if eq .Page "profile"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
+            <span>👤</span> Profile & QR
           </a>
           {{if eq .User.Role "admin"}}
-            <a href="/admin" class="btn btn-secondary" style="justify-start: flex-start; gap: 12px; width: 100%; margin-top: 12px;">
+            <a href="/admin" class="btn btn-secondary" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px; margin-top: 10px;">
               <span>🛡️</span> Risk Console
             </a>
           {{end}}
         </nav>
       </div>
 
-      <div>
-        <div style="padding: 12px; background: var(--bg); border-radius: var(--radius-md); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
-          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-tint); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700;">
-            {{slice .User.Name 0 1}}
+      <!-- Stitch Sidebar Footer: KYC Verified & Profile -->
+      <div style="border-top: 1px solid var(--line); padding-top: 16px;">
+        <!-- KYC Verified Card Badge -->
+        <div style="background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: var(--radius-md); padding: 12px; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--ink);">
+              {{if eq .User.KYCLevel "full"}}KYC Verified ✓{{else}}Basic KYC{{end}}
+            </span>
+            <span class="badge {{if eq .User.KYCLevel "full"}}badge-success{{else}}badge-warning{{end}}" style="font-size: 0.65rem; padding: 2px 6px;">
+              {{if eq .User.KYCLevel "full"}}Tier-2{{else}}Tier-1{{end}}
+            </span>
           </div>
-          <div style="overflow: hidden;">
-            <div style="font-size: 0.875rem; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{.User.Name}}</div>
-            <div style="font-size: 0.75rem; color: var(--muted);">{{.User.Handle}}</div>
+          <div style="font-size: 0.75rem; color: var(--muted);">
+            Limit: {{if eq .User.KYCLevel "full"}}₹1,00,000/day{{else}}₹10,000/day{{end}}
           </div>
         </div>
-        <button onclick="handleLogout()" class="btn btn-outline" style="width: 100%; gap: 8px;">
-          <span>🚪</span> Log Out
-        </button>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 4px;">
+          <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; shrink-0: 0;">
+              {{slice .User.Name 0 1}}
+            </div>
+            <div style="overflow: hidden; line-height: 1.2;">
+              <div style="font-size: 0.85rem; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{.User.Name}}</div>
+              <div style="font-size: 0.75rem; color: var(--primary-bright); font-family: var(--font-mono);">{{.User.Handle}}</div>
+            </div>
+          </div>
+          <button onclick="handleLogout()" style="color: var(--muted); font-size: 1.1rem; padding: 4px;" title="Log Out">
+            🚪
+          </button>
+        </div>
       </div>
     </aside>
 
@@ -71,8 +127,11 @@
 
     <!-- Desktop Right Quick Panel -->
     <aside class="desktop-side">
-      <div class="card" style="margin-bottom: 20px;">
-        <h3 style="font-size: 1.1rem; margin-bottom: 16px;">Quick Send</h3>
+      <div class="glass-panel" style="margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+          <span style="font-size: 1.2rem; color: var(--primary-bright);">⚡</span>
+          <h3 style="font-size: 1.1rem; font-weight: 700;">Instant Transfer</h3>
+        </div>
         <form action="/api/v1/transfers" method="POST" onsubmit="event.preventDefault(); submitQuickSend(this);">
           <div class="form-group">
             <label class="form-label">Recipient Handle</label>
@@ -84,18 +143,18 @@
           </div>
           <div class="form-group">
             <label class="form-label">Note</label>
-            <input type="text" name="note" class="form-control" placeholder="Chai ☕">
+            <input type="text" name="note" class="form-control" placeholder="Swiggy split 🍕">
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Send Money</button>
+          <button type="submit" class="btn btn-primary btn-block">Send Now</button>
         </form>
       </div>
 
-      <div class="card">
-        <h3 style="font-size: 1rem; margin-bottom: 12px;">Pocketa Security</h3>
-        <div style="font-size: 0.85rem; color: var(--muted); line-height: 1.5;">
-          <p style="margin-bottom: 8px;">🔒 256-bit bank-grade encryption</p>
-          <p style="margin-bottom: 8px;">⚡ Instant 24x7 settlements</p>
-          <p>🛡️ Fraud monitoring active</p>
+      <div class="glass-panel" style="background: rgba(16, 20, 19, 0.6);">
+        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--primary-bright);">Security Shield</h3>
+        <div style="font-size: 0.8rem; color: var(--muted); line-height: 1.6;">
+          <p style="margin-bottom: 6px;">🔒 256-bit bank-grade encryption</p>
+          <p style="margin-bottom: 6px;">⚡ Direct IMPS instant settlement</p>
+          <p>🛡️ Real-time ledger audit active</p>
         </div>
       </div>
     </aside>
@@ -113,7 +172,7 @@
     </a>
     <a href="/app/request" class="nav-item {{if eq .Page "request"}}active{{end}}">
       <span style="font-size: 1.25rem;">🤲</span>
-      <span>Request</span>
+      <span>Split</span>
     </a>
     <a href="/app/activity" class="nav-item {{if eq .Page "activity"}}active{{end}}">
       <span style="font-size: 1.25rem;">📊</span>
