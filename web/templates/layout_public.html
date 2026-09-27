@@ -4,27 +4,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{.Title}} — Pocketa | Instant Peer-to-Peer Payments</title>
+  <title>{{.Title}} — Pocketa | Exclusive Wealth & Neobank</title>
   <link rel="stylesheet" href="/static/style.css">
   <script src="/static/app.js" defer></script>
 </head>
 <body>
   <div class="public-container">
+    <!-- Stitch Navigation Bar -->
     <header class="navbar">
       <a href="/" class="brand">
-        <div class="brand-icon">P</div>
-        <span>Pocketa</span>
+        <div class="brand-icon">
+          <span>◆</span>
+        </div>
+        <div>
+          <span style="letter-spacing: -0.02em;">Pocketa</span>
+          <span style="font-size: 0.65rem; display: block; text-transform: uppercase; letter-spacing: 0.12em; color: var(--tertiary); font-weight: 700; line-height: 1;">Exclusive Wealth</span>
+        </div>
       </a>
+      
       <nav class="nav-links">
-        <a href="/fees">Fees</a>
+        <a href="/#features">Features</a>
+        <a href="/fees">Fees & Limits</a>
         <a href="/security">Security</a>
-        <a href="/careers">Careers</a>
+        <a href="/about">About</a>
         <a href="/help">Help</a>
+        
+        <!-- Currency Pill -->
+        <div style="display: flex; align-items: center; gap: 6px; background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 5px 12px; border-radius: 9999px; font-size: 0.78rem; font-weight: 600; color: var(--muted);">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--secondary);"></span>
+          <span>INR (₹)</span>
+        </div>
+
         {{if .User}}
-          <a href="/app" class="btn btn-primary" style="height:38px; padding:0 16px;">Go to App</a>
+          <a href="/app" class="btn btn-primary" style="height: 38px; padding: 0 18px; font-size: 0.88rem;">Open App ⚡</a>
         {{else}}
-          <a href="/login">Log In</a>
-          <a href="/signup" class="btn btn-primary" style="height:38px; padding:0 16px;">Sign Up</a>
+          <a href="/login" style="font-weight: 600; color: var(--ink);">Sign In</a>
+          <a href="/signup" class="btn btn-primary" style="height: 38px; padding: 0 18px; font-size: 0.88rem;">Open Account →</a>
         {{end}}
       </nav>
     </header>
@@ -33,36 +48,56 @@
       {{template "content" .}}
     </main>
 
-    <footer style="margin-top: 60px; padding: 40px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.875rem;">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 30px;">
+    <!-- Comprehensive Luxury Fintech Footer -->
+    <footer style="margin-top: 80px; padding: 50px 0 30px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.875rem;">
+      <div style="display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 40px; margin-bottom: 40px;">
         <div>
-          <div class="brand" style="font-size: 1.25rem; margin-bottom: 12px;">
-            <div class="brand-icon" style="width: 26px; height: 26px; font-size: 0.9rem;">P</div>
+          <div class="brand" style="margin-bottom: 14px;">
+            <div class="brand-icon" style="width: 32px; height: 32px; font-size: 0.95rem;">◆</div>
             <span>Pocketa</span>
           </div>
-          <p>Money that moves as fast as your friends. India's favorite peer-to-peer neobank wallet.</p>
+          <p style="line-height: 1.6; max-width: 320px; margin-bottom: 16px;">
+            India's premier peer-to-peer neobank and digital wallet ecosystem. Ultra-fast social transfers, titanium RuPay card, and zero-latency settlements.
+          </p>
+          <div style="display: flex; gap: 10px; font-size: 0.75rem; color: var(--primary-bright);">
+            <span class="badge badge-success">RBI PPI Compliant</span>
+            <span class="badge badge-warning">NPCI Certified</span>
+          </div>
         </div>
         <div>
-          <h4 style="color: var(--ink); margin-bottom: 12px;">Product</h4>
-          <p><a href="/fees">Fees & Limits</a></p>
-          <p><a href="/security">Security Architecture</a></p>
-          <p><a href="/help">Help Centre</a></p>
+          <h4 style="color: var(--ink); font-size: 0.95rem; margin-bottom: 14px; font-weight: 700;">Products</h4>
+          <p style="margin-bottom: 8px;"><a href="/#features">@Handle Transfers</a></p>
+          <p style="margin-bottom: 8px;"><a href="/#features">Intelligent Bill Split</a></p>
+          <p style="margin-bottom: 8px;"><a href="/fees">Flat ₹2 Cashouts</a></p>
+          <p style="margin-bottom: 8px;"><a href="/security">Security Architecture</a></p>
         </div>
         <div>
-          <h4 style="color: var(--ink); margin-bottom: 12px;">Company</h4>
-          <p><a href="/about">About Us</a></p>
-          <p><a href="/careers">Careers</a></p>
-          <p><a href="/contact">Contact Support</a></p>
+          <h4 style="color: var(--ink); font-size: 0.95rem; margin-bottom: 14px; font-weight: 700;">Company</h4>
+          <p style="margin-bottom: 8px;"><a href="/about">About Us</a></p>
+          <p style="margin-bottom: 8px;"><a href="/careers">Careers (Hiring!)</a></p>
+          <p style="margin-bottom: 8px;"><a href="/contact">Contact Support</a></p>
+          <p style="margin-bottom: 8px;"><a href="/help">Help & FAQs</a></p>
         </div>
         <div>
-          <h4 style="color: var(--ink); margin-bottom: 12px;">Legal & Trust</h4>
-          <p><a href="/terms">Terms of Service</a></p>
-          <p><a href="/privacy">Privacy Policy</a></p>
-          <p><a href="/grievance">Grievance Redressal</a></p>
+          <h4 style="color: var(--ink); font-size: 0.95rem; margin-bottom: 14px; font-weight: 700;">Legal & Regulatory</h4>
+          <p style="margin-bottom: 8px;"><a href="/terms">Terms of Service</a></p>
+          <p style="margin-bottom: 8px;"><a href="/privacy">Privacy Policy</a></p>
+          <p style="margin-bottom: 8px;"><a href="/grievance">Grievance Redressal</a></p>
+          <p style="margin-bottom: 8px;"><a href="/security">PCI-DSS Level 1</a></p>
         </div>
       </div>
-      <div style="text-align: center; border-top: 1px solid var(--line); padding-top: 20px;">
-        <p>© 2026 Pocketa Financial Technologies Pvt Ltd. All rights reserved. Partnered with RBI-regulated banks.</p>
+      
+      <div style="border-top: 1px solid rgba(61, 74, 67, 0.3); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 0.8rem;">
+        <div>
+          © 2026 Pocketa Financial Technologies Pvt Ltd. All rights reserved. Registered with Reserve Bank of India (PPI Master Directions 2021).
+        </div>
+        <div style="display: flex; gap: 16px;">
+          <span>Bangalore</span>
+          <span>•</span>
+          <span>Mumbai</span>
+          <span>•</span>
+          <span>New Delhi</span>
+        </div>
       </div>
     </footer>
   </div>

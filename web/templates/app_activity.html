@@ -1,44 +1,76 @@
 {{define "content"}}
-<div style="display: flex; flex-direction: column; gap: 20px;">
-  <div class="card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-      <h2 style="font-size: 1.5rem;">Activity & Statement</h2>
-      <a href="/api/v1/wallet/statement.csv" class="btn btn-outline" style="height: 38px; padding: 0 16px; font-size: 0.85rem;">
-        📥 Download Statement (CSV)
+<div style="display: flex; flex-direction: column; gap: 24px;">
+  <!-- Activity Header Banner -->
+  <div class="card" style="padding: 28px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 14px;">
+      <div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">Activity Ledger</h2>
+        <p style="color: var(--muted); font-size: 0.88rem;">Double-entry cryptographic ledger of all wallet inflows and outflows.</p>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <a href="/api/v1/wallet/statement.csv" class="btn btn-secondary" style="height: 42px; padding: 0 18px; font-size: 0.88rem; gap: 8px;">
+          <span>📥</span> Download Statement (CSV)
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Pill Filters -->
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+      <a href="/app/activity" class="preset-chip {{if eq .FilterType ""}}active{{end}}" style="{{if eq .FilterType ""}}background: var(--primary); color: #0b0f0e; font-weight: 700; border-color: var(--primary);{{end}}">
+        All Activity
+      </a>
+      <a href="/app/activity?type=transfer_in" class="preset-chip" style="{{if eq .FilterType "transfer_in"}}background: var(--primary); color: #0b0f0e; font-weight: 700; border-color: var(--primary);{{end}}">
+        📥 Received
+      </a>
+      <a href="/app/activity?type=transfer_out" class="preset-chip" style="{{if eq .FilterType "transfer_out"}}background: var(--primary); color: #0b0f0e; font-weight: 700; border-color: var(--primary);{{end}}">
+        📤 Sent
+      </a>
+      <a href="/app/activity?type=top_up" class="preset-chip" style="{{if eq .FilterType "top_up"}}background: var(--primary); color: #0b0f0e; font-weight: 700; border-color: var(--primary);{{end}}">
+        ➕ Top-ups
+      </a>
+      <a href="/app/activity?type=withdrawal" class="preset-chip" style="{{if eq .FilterType "withdrawal"}}background: var(--primary); color: #0b0f0e; font-weight: 700; border-color: var(--primary);{{end}}">
+        🏦 Bank Cashouts
       </a>
     </div>
 
-    <!-- Filter Bar -->
-    <form method="GET" action="/app/activity" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) 100px; gap: 10px; margin-bottom: 24px;">
+    <!-- Detailed Date & Custom Filter Bar -->
+    <form method="GET" action="/app/activity" style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; background: var(--surface-container-low); padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--outline-variant); margin-bottom: 24px;">
       <div>
+        <label class="form-label" style="font-size: 0.75rem; margin-bottom: 4px;">Transaction Type</label>
         <select name="type" class="form-control" style="height: 40px; font-size: 0.85rem;">
           <option value="">All Types</option>
-          <option value="top_up" {{if eq .FilterType "top_up"}}selected{{end}}>Top Up</option>
-          <option value="transfer_in" {{if eq .FilterType "transfer_in"}}selected{{end}}>Received</option>
-          <option value="transfer_out" {{if eq .FilterType "transfer_out"}}selected{{end}}>Sent</option>
-          <option value="withdrawal" {{if eq .FilterType "withdrawal"}}selected{{end}}>Withdrawal</option>
-          <option value="fee" {{if eq .FilterType "fee"}}selected{{end}}>Fee</option>
+          <option value="top_up" {{if eq .FilterType "top_up"}}selected{{end}}>Top Up (Inflow)</option>
+          <option value="transfer_in" {{if eq .FilterType "transfer_in"}}selected{{end}}>Received (P2P In)</option>
+          <option value="transfer_out" {{if eq .FilterType "transfer_out"}}selected{{end}}>Sent (P2P Out)</option>
+          <option value="withdrawal" {{if eq .FilterType "withdrawal"}}selected{{end}}>Bank Cashout</option>
+          <option value="fee" {{if eq .FilterType "fee"}}selected{{end}}>Platform Fee</option>
         </select>
       </div>
 
       <div>
+        <label class="form-label" style="font-size: 0.75rem; margin-bottom: 4px;">From Date</label>
         <input type="date" name="from" value="{{.FilterFrom}}" class="form-control" style="height: 40px; font-size: 0.85rem;">
       </div>
 
       <div>
+        <label class="form-label" style="font-size: 0.75rem; margin-bottom: 4px;">To Date</label>
         <input type="date" name="to" value="{{.FilterTo}}" class="form-control" style="height: 40px; font-size: 0.85rem;">
       </div>
 
-      <button type="submit" class="btn btn-primary" style="height: 40px; font-size: 0.85rem;">Filter</button>
+      <div style="display: flex; align-items: flex-end;">
+        <button type="submit" class="btn btn-primary" style="height: 40px; padding: 0 20px; font-size: 0.85rem;">
+          Apply Filters
+        </button>
+      </div>
     </form>
 
-    <!-- Transactions Grouped List -->
+    <!-- Ledger Feed Rows -->
     {{if .Transactions}}
       <div style="display: flex; flex-direction: column;">
         {{range .Transactions}}
           <div class="txn-row">
             <div class="txn-info">
-              <div class="txn-icon">
+              <div class="txn-icon" style="background: {{if gt .AmountPaise 0}}rgba(69, 223, 164, 0.15){{else}}var(--surface-container-high){{end}}; border-color: {{if gt .AmountPaise 0}}rgba(69, 223, 164, 0.3){{else}}var(--outline-variant){{end}};">
                 {{if eq .Type "top_up"}}➕
                 {{else if eq .Type "transfer_in"}}📥
                 {{else if eq .Type "transfer_out"}}📤
@@ -47,22 +79,32 @@
                 {{else}}💰{{end}}
               </div>
               <div>
-                <div class="txn-title">{{.Note}}</div>
+                <div class="txn-title" style="display: flex; align-items: center; gap: 8px;">
+                  <span>{{.Note}}</span>
+                  {{if eq .Type "withdrawal"}}
+                    <span class="badge badge-warning" style="font-size: 0.65rem; padding: 1px 6px;">IMPS Cashout</span>
+                  {{else if eq .Type "top_up"}}
+                    <span class="badge badge-success" style="font-size: 0.65rem; padding: 1px 6px;">Instant UPI</span>
+                  {{end}}
+                </div>
                 <div class="txn-sub">
                   {{if .CounterpartyName}}
-                    {{.CounterpartyName}} ({{.CounterpartyHandle}}) •
+                    <strong style="color: var(--ink);">{{.CounterpartyName}}</strong> ({{.CounterpartyHandle}}) •
                   {{end}}
-                  {{.CreatedAt.Format "02 Jan 2006, 15:04"}}
+                  {{.CreatedAt.Format "02 Jan 2006, 15:04:05"}} IST
                 </div>
-                <div class="txn-sub" style="font-family: var(--font-mono); font-size: 0.75rem;">Ref: {{.ReferenceID}}</div>
+                <div class="txn-sub" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+                  <span>Ref: {{.ReferenceID}}</span>
+                  <span style="cursor: pointer; color: var(--primary-bright);" onclick="navigator.clipboard.writeText('{{.ReferenceID}}'); showToast('Reference ID copied to clipboard!')">📋</span>
+                </div>
               </div>
             </div>
 
             <div style="text-align: right;">
-              <div class="txn-amt {{if gt .AmountPaise 0}}in{{else}}out{{end}}">
+              <div class="txn-amt {{if gt .AmountPaise 0}}in{{else}}out{{end}}" style="font-size: 1.15rem;">
                 {{if gt .AmountPaise 0}}+{{end}}{{.FormattedAmount}}
               </div>
-              <div style="font-size: 0.75rem; color: var(--muted); margin-top: 4px;">
+              <div style="font-size: 0.75rem; color: var(--muted); margin-top: 4px; font-family: var(--font-mono);">
                 Bal: {{.FormattedBalanceAfter}}
               </div>
             </div>
@@ -70,8 +112,13 @@
         {{end}}
       </div>
     {{else}}
-      <div style="text-align: center; padding: 40px 0; color: var(--muted);">
-        <p>No transactions match your criteria.</p>
+      <div style="text-align: center; padding: 60px 0; color: var(--muted);">
+        <div style="font-size: 2.5rem; margin-bottom: 12px;">📊</div>
+        <p style="font-size: 1.1rem; color: #FFFFFF; font-weight: 700; margin-bottom: 6px;">No transactions found</p>
+        <p style="font-size: 0.88rem; max-width: 400px; margin: 0 auto 20px auto;">
+          Try adjusting your filter settings or initiate a transfer to populate your ledger.
+        </p>
+        <a href="/app/send" class="btn btn-primary" style="height: 40px; font-size: 0.88rem;">Send Your First Transfer</a>
       </div>
     {{end}}
   </div>

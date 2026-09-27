@@ -1,142 +1,412 @@
 {{define "content"}}
-<div style="text-align: center; padding: 70px 0 50px 0;">
+<div style="padding-top: 40px;">
   <!-- Ambient Top Badge -->
-  <div style="display: inline-flex; align-items: center; gap: 8px; background: var(--primary-tint); border: 1px solid rgba(101, 219, 176, 0.4); border-radius: 9999px; padding: 6px 18px; margin-bottom: 24px; box-shadow: 0 0 20px rgba(101, 219, 176, 0.2);">
-    <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary-bright); box-shadow: 0 0 8px var(--primary-bright);"></span>
-    <span style="font-size: 0.85rem; font-weight: 700; color: var(--primary-bright); text-transform: uppercase; letter-spacing: 0.05em;">India's Premier Neobank Digital Wallet</span>
+  <div style="text-align: center; margin-bottom: 24px;">
+    <div style="display: inline-flex; align-items: center; gap: 8px; background: var(--surface-container); border: 1px solid rgba(101, 219, 176, 0.4); border-radius: 9999px; padding: 6px 18px; box-shadow: 0 0 20px rgba(101, 219, 176, 0.15);">
+      <span style="position: relative; display: flex; width: 8px; height: 8px;">
+        <span style="position: absolute; display: inline-flex; width: 100%; height: 100%; border-radius: 50%; background: var(--secondary); opacity: 0.75; animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
+        <span style="position: relative; display: inline-flex; width: 8px; height: 8px; border-radius: 50%; background: var(--secondary);"></span>
+      </span>
+      <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary-bright); text-transform: uppercase; letter-spacing: 0.08em;">
+        INVITE-ONLY DIGITAL NEOBANK • RBI PPI COMPLIANT
+      </span>
+    </div>
   </div>
 
-  <h1 style="font-size: 3.6rem; font-weight: 800; line-height: 1.1; max-width: 850px; margin: 0 auto 24px auto; color: #FFFFFF; letter-spacing: -0.03em;">
-    Money that moves as fast as your friends.
-  </h1>
-  <p style="font-size: 1.25rem; color: var(--muted); max-width: 640px; margin: 0 auto 36px auto; line-height: 1.6;">
-    Send, split, request, and withdraw money instantly with zero friction. Experience CRED-grade luxury meets Revolut speed for everyday peer-to-peer payments.
-  </p>
+  <!-- Hero Headline & Description -->
+  <div style="text-align: center; max-width: 900px; margin: 0 auto 36px auto;">
+    <h1 style="font-size: 3.8rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; color: #FFFFFF; letter-spacing: -0.03em;">
+      Money that moves as fast as <span style="background: linear-gradient(135deg, var(--primary-bright) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">your friends.</span>
+    </h1>
+    <p style="font-size: 1.25rem; color: var(--muted); max-width: 680px; margin: 0 auto; line-height: 1.6;">
+      Experience India's first obsidian titanium neobanking ecosystem. Zero forex markups, zero transfer latency, and effortless social splits with peer-to-peer @pocketa handles.
+    </p>
 
-  <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap;">
-    <a href="/signup" class="btn btn-primary" style="height: 52px; padding: 0 36px; font-size: 1.05rem;">Open Free Account</a>
-    <a href="/fees" class="btn btn-outline" style="height: 52px; padding: 0 28px; font-size: 1.05rem;">Explore Fees & Limits</a>
+    <!-- Hero CTA Buttons -->
+    <div style="display: flex; gap: 16px; justify-content: center; margin-top: 36px; flex-wrap: wrap;">
+      <a href="/signup" class="btn btn-primary" style="height: 52px; padding: 0 36px; font-size: 1.05rem; border-radius: 9999px;">
+        <span>💳 Claim Your Handle & Card</span>
+      </a>
+      <a href="/login" class="btn btn-outline" style="height: 52px; padding: 0 28px; font-size: 1.05rem; border-radius: 9999px;">
+        <span>Sign In to Pocketa →</span>
+      </a>
+    </div>
   </div>
 
-  <!-- High-End App Hero Mockup in Pure HTML/CSS -->
-  <div style="max-width: 420px; margin: 0 auto; background: rgba(16, 20, 19, 0.85); backdrop-filter: blur(24px); border-radius: 40px; padding: 20px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(15, 157, 118, 0.25); border: 2px solid rgba(101, 219, 176, 0.35);">
-    <!-- Inner Screen -->
-    <div style="background: linear-gradient(135deg, rgba(11, 61, 46, 0.95) 0%, rgba(15, 157, 118, 0.7) 60%, rgba(52, 211, 153, 0.35) 100%); border-radius: 28px; padding: 24px; color: white; text-align: left; box-shadow: inset 0 1px 2px rgba(255,255,255,0.3); border: 1px solid rgba(101, 219, 176, 0.4);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <div class="emv-chip" style="transform: scale(0.85); transform-origin: left center;"></div>
-        <div style="font-size: 0.7rem; font-weight: 800; color: var(--primary-bright); letter-spacing: 0.1em;">PLATINUM TITANIUM</div>
+  <!-- 3D Titanium Virtual RuPay Card Showcase (Stitch Component) -->
+  <div style="max-width: 720px; margin: 50px auto 70px auto; position: relative;">
+    <!-- Ambient Blur Halo -->
+    <div style="position: absolute; inset: -20px; background: radial-gradient(circle at 50% 50%, rgba(15, 157, 118, 0.25) 0%, transparent 70%); filter: blur(40px); z-index: 0; pointer-events: none;"></div>
+
+    <!-- The Obsidian Titanium RuPay Card -->
+    <div class="titanium-card-sheen" style="border-radius: 28px; padding: 36px; position: relative; z-index: 1; overflow: hidden; backdrop-filter: blur(20px);">
+      <!-- Top Row: Jewel Brand + Contactless & RuPay Platinum -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.5rem; color: var(--primary-bright);">◆</span>
+          <span style="font-family: var(--font-sans); font-size: 1.3rem; font-weight: 800; letter-spacing: 0.05em; color: #FFFFFF;">POCKETA</span>
+          <span style="background: rgba(233, 195, 73, 0.15); color: var(--tertiary); border: 1px solid rgba(233, 195, 73, 0.35); padding: 2px 8px; border-radius: 9999px; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Titanium</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 1.3rem; color: var(--muted);">📶</span>
+          <span style="font-family: var(--font-sans); font-weight: 800; font-size: 1.1rem; color: #FFFFFF;">RuPay <span style="color: var(--secondary); font-weight: 600; font-size: 0.85rem;">PLATINUM</span></span>
+        </div>
       </div>
-      <div style="font-size: 0.8rem; opacity: 0.85;">Total Net Balance</div>
-      <div style="font-size: 2.4rem; font-weight: 800; font-family: var(--font-sans); margin: 6px 0 16px 0; letter-spacing: -0.02em;">₹48,300.00</div>
-      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px;">
-        <span style="font-family: var(--font-mono);">@arjun.m</span>
-        <span style="color: var(--primary-bright); font-weight: 700;">Verified Tier-2 ✓</span>
+
+      <!-- EMV Chip & Live Telemetry Balance -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+        <div class="emv-chip">
+          <div class="emv-chip-line"></div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px;">Total Net Balance</div>
+          <div style="font-family: var(--font-sans); font-size: 2.5rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;">₹48,300.00</div>
+        </div>
+      </div>
+
+      <!-- Card Details: Masked Number, Expiry, Cardholder -->
+      <div style="border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 20px;">
+        <div style="font-family: var(--font-mono); font-size: 1.25rem; letter-spacing: 0.15em; color: #FFFFFF; margin-bottom: 16px;">
+          •••• &nbsp;•••• &nbsp;•••• &nbsp;<span style="color: var(--primary-bright); font-weight: 700;">8942</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <div>
+            <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);">Cardholder</div>
+            <div style="font-size: 1.05rem; font-weight: 700; color: #FFFFFF;">Arjun Mehta</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 20px;">
+            <div>
+              <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);">Valid Thru</div>
+              <div style="font-family: var(--font-mono); font-size: 1rem; color: #FFFFFF;">09/29</div>
+            </div>
+            <div style="background: var(--surface-container); border: 1px solid rgba(101, 219, 176, 0.4); padding: 4px 10px; border-radius: 8px; display: flex; align-items: center; gap: 6px;">
+              <span style="color: var(--primary-bright); font-size: 0.85rem;">✓</span>
+              <span style="font-size: 0.72rem; font-weight: 800; color: var(--primary-bright); letter-spacing: 0.05em;">KYC ACTIVE</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Quick action buttons -->
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px;">
-      <div style="background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 12px 6px; border-radius: 14px; font-size: 0.75rem; font-weight: 700; text-align: center;">
-        <div style="font-size: 1.2rem; margin-bottom: 4px;">➕</div>
+    <!-- Floating Action Badges Around Card -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 18px;">
+      <a href="/login" class="action-btn" style="text-decoration: none;">
+        <span class="action-icon" style="color: var(--primary-bright);">➕</span>
         <span>Top-up</span>
-      </div>
-      <div style="background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 12px 6px; border-radius: 14px; font-size: 0.75rem; font-weight: 700; text-align: center;">
-        <div style="font-size: 1.2rem; margin-bottom: 4px;">💸</div>
+      </a>
+      <a href="/login" class="action-btn" style="text-decoration: none;">
+        <span class="action-icon" style="color: var(--secondary);">💸</span>
         <span>Send @</span>
-      </div>
-      <div style="background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 12px 6px; border-radius: 14px; font-size: 0.75rem; font-weight: 700; text-align: center;">
-        <div style="font-size: 1.2rem; margin-bottom: 4px;">🤲</div>
-        <span>Split</span>
-      </div>
-      <div style="background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 12px 6px; border-radius: 14px; font-size: 0.75rem; font-weight: 700; text-align: center;">
-        <div style="font-size: 1.2rem; margin-bottom: 4px;">🏦</div>
+      </a>
+      <a href="/login" class="action-btn" style="text-decoration: none;">
+        <span class="action-icon" style="color: var(--tertiary);">🤲</span>
+        <span>Split Bill</span>
+      </a>
+      <a href="/login" class="action-btn" style="text-decoration: none;">
+        <span class="action-icon" style="color: var(--ink);">🏦</span>
         <span>Withdraw</span>
-      </div>
+      </a>
     </div>
   </div>
-</div>
 
-<!-- Features Section -->
-<div style="padding: 80px 0; border-top: 1px solid var(--line);">
-  <div style="text-align: center; max-width: 600px; margin: 0 auto 50px auto;">
-    <h2 style="font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px;">Engineered for modern India</h2>
-    <p style="color: var(--muted); font-size: 1.05rem;">Everything you need to manage peer-to-peer payments, shared expenses, and instant bank cashouts.</p>
-  </div>
-
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-    <div class="glass-panel" style="padding: 32px;">
-      <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; border: 1px solid rgba(101, 219, 176, 0.3);">
-        ⚡
+  <!-- Trust & Security Ticker Ribbon (Stitch Component 3) -->
+  <section style="background: rgba(11, 15, 14, 0.7); backdrop-filter: blur(16px); border-radius: 20px; border: 1px solid var(--outline-variant); padding: 24px; margin-bottom: 70px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; text-align: center;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <div style="display: flex; align-items: center; gap: 8px; color: var(--primary-bright); font-weight: 700; font-size: 1rem;">
+          <span>🏛️</span>
+          <span>RBI PPI Compliant</span>
+        </div>
+        <span style="font-size: 0.8rem; color: var(--muted);">Authorized Semi-Closed PPI License</span>
       </div>
-      <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px;">Instant @Handle Transfers</h3>
-      <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6;">Say goodbye to tedious bank account numbers and IFSC lookups. Send money to any friend instantly using clean custom handles like @riya.s.</p>
-    </div>
-
-    <div class="glass-panel" style="padding: 32px;">
-      <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--secondary-tint); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; border: 1px solid rgba(69, 223, 164, 0.3);">
-        🍕
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <div style="display: flex; align-items: center; gap: 8px; color: var(--secondary); font-weight: 700; font-size: 1rem;">
+          <span>🔒</span>
+          <span>NPCI 256-Bit AES</span>
+        </div>
+        <span style="font-size: 0.8rem; color: var(--muted);">End-to-End Encrypted UPI Switch</span>
       </div>
-      <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px;">Intelligent Bill Splitting</h3>
-      <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6;">Split dinners, travel tickets, or flat rent among multiple friends in one click. Pocketa distributes remainder paise fairly and dispatches requests automatically.</p>
-    </div>
-
-    <div class="glass-panel" style="padding: 32px;">
-      <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--tertiary-tint); color: var(--tertiary); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; border: 1px solid rgba(233, 195, 73, 0.3);">
-        🏦
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <div style="display: flex; align-items: center; gap: 8px; color: var(--tertiary); font-weight: 700; font-size: 1rem;">
+          <span>🛡️</span>
+          <span>₹5 Lakh DICGC Partner</span>
+        </div>
+        <span style="font-size: 0.8rem; color: var(--muted);">Scheduled Commercial Bank Insured</span>
       </div>
-      <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 10px;">Flat ₹2 Bank Withdrawals</h3>
-      <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6;">Withdraw your balance directly to HDFC, ICICI, SBI, Axis, or Kotak via IMPS instant settlements. Completely transparent flat ₹2.00 fee.</p>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <div style="display: flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 700; font-size: 1rem;">
+          <span>💳</span>
+          <span>RuPay Platinum Network</span>
+        </div>
+        <span style="font-size: 0.8rem; color: var(--muted);">Accepted at 50M+ POS & Portals</span>
+      </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- 3-Step How It Works -->
-<div class="glass-panel" style="margin: 40px 0; padding: 50px 40px;">
-  <h2 style="text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 40px;">Get up and running in 3 simple steps</h2>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; text-align: center;">
-    <div>
-      <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; margin: 0 auto 16px auto; border: 1px solid var(--primary-bright);">1</div>
-      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px;">Claim Your Handle</h3>
-      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">Pick your unique Pocketa handle and register in under 30 seconds with instant basic KYC.</p>
+  <!-- Core Value Proposition Grid (3 Bento Cards - Stitch Component 4) -->
+  <section style="margin-bottom: 80px;" id="features">
+    <div style="text-align: center; max-width: 680px; margin: 0 auto 50px auto;">
+      <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary-bright); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 10px;">
+        ENGINEERED FOR ULTRA-PRECISION
+      </span>
+      <h2 style="font-size: 2.6rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 14px; color: #FFFFFF;">
+        Bespoke fintech architecture, built for Indian prosperity.
+      </h2>
+      <p style="color: var(--muted); font-size: 1.1rem; line-height: 1.6;">
+        No tedious OTP waits, zero routing drops, and instantaneous social settlements that make traditional banking apps feel like relics.
+      </p>
     </div>
-    <div>
-      <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; margin: 0 auto 16px auto; border: 1px solid var(--primary-bright);">2</div>
-      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px;">Zero-Fee Top-Up</h3>
-      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">Load funds into your digital wallet instantly via UPI, debit card, or netbanking with 0% fee.</p>
-    </div>
-    <div>
-      <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; margin: 0 auto 16px auto; border: 1px solid var(--primary-bright);">3</div>
-      <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px;">Transact Freely</h3>
-      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">Send money to anyone, settle split requests, or cash out to your primary bank account.</p>
-    </div>
-  </div>
-</div>
 
-<!-- Testimonials -->
-<div style="padding: 40px 0 80px 0;">
-  <h2 style="text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 40px;">Trusted by 500,000+ members</h2>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
-    <div class="glass-panel" style="padding: 28px;">
-      <p style="font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px;">"Pocketa completely replaced Splitwise and UPI apps for our friend circle. We split dinner and fuel in seconds without calculating change."</p>
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-weight: 800;">R</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+      <!-- Card 1: Instant @handle Transfers -->
+      <div class="glass-panel" style="padding: 32px; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
-          <div style="font-weight: 700;">Riya Sharma</div>
-          <div style="font-size: 0.8rem; color: var(--muted);">Product Lead • Mumbai</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--primary-tint); border: 1px solid rgba(101, 219, 176, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary-bright);">
+              @
+            </div>
+            <span class="badge badge-success">Sub-Second</span>
+          </div>
+          <h3 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; color: #FFFFFF;">Instant @handle Transfers</h3>
+          <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+            Zero IFSC or complex account number hassles. Pay anyone via custom @name across UPI and Pocketa networks with sub-second finality.
+          </p>
+        </div>
+        <!-- Micro UI Preview -->
+        <div style="background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); border-radius: var(--radius-md); padding: 14px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 8px;">
+            <span style="color: var(--muted);">Destination</span>
+            <span style="color: var(--secondary); font-family: var(--font-mono);">@kavya.verma</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: var(--surface-container-high); padding: 8px 12px; border-radius: 8px;">
+            <span style="font-weight: 800; font-size: 1.1rem; color: #FFFFFF;">₹14,500.00</span>
+            <span style="color: var(--primary-bright); font-size: 0.9rem;">✓ Settled</span>
+          </div>
+          <div style="font-size: 0.72rem; color: var(--muted); margin-top: 8px; display: flex; align-items: center; gap: 4px;">
+            <span style="color: var(--primary-bright);">⚡</span> Latency: 340ms via Pocketa Mesh
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Intelligent Bill Splitting -->
+      <div class="glass-panel" style="padding: 32px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--secondary-tint); border: 1px solid rgba(69, 223, 164, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--secondary);">
+              🤲
+            </div>
+            <span class="badge badge-success">Smart OCR</span>
+          </div>
+          <h3 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; color: #FFFFFF;">Intelligent Bill Splitting</h3>
+          <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+            Multi-party expense settlement with automated friendly WhatsApp reminders, receipt scanning, and one-tap settling without leaving the chat.
+          </p>
+        </div>
+        <!-- Micro UI Preview -->
+        <div style="background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); border-radius: var(--radius-md); padding: 14px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; border-bottom: 1px solid var(--line); padding-bottom: 6px; margin-bottom: 8px;">
+            <span style="font-weight: 700; color: #FFFFFF;">Goa Villa Weekend</span>
+            <span style="font-family: var(--font-mono); color: var(--muted);">₹24,800 Total</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 6px;">
+            <span>Rohan K. (@rohan.k)</span>
+            <span style="color: var(--secondary); font-weight: 700;">Settled ₹6,200</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+            <span>Pooja S. (@pooja.s)</span>
+            <span style="color: var(--tertiary); font-weight: 700;">Pending Nudge</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Flat ₹2 IMPS Bank Cashout -->
+      <div class="glass-panel" style="padding: 32px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--tertiary-tint); border: 1px solid rgba(233, 195, 73, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--tertiary);">
+              🏦
+            </div>
+            <span class="badge badge-warning">Zero % Fees</span>
+          </div>
+          <h3 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; color: #FFFFFF;">Flat ₹2 IMPS Bank Cashout</h3>
+          <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+            Move money out of your wallet directly to any Indian commercial bank account at any hour of the day with a flat ₹2 convenience fee.
+          </p>
+        </div>
+        <!-- Micro UI Preview -->
+        <div style="background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); border-radius: var(--radius-md); padding: 14px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
+            <span style="color: var(--muted);">Cashout Amount:</span>
+            <span style="font-weight: 700; color: #FFFFFF;">₹50,000.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); margin-bottom: 6px;">
+            <span>Traditional Gateway (1.8%):</span>
+            <span style="text-decoration: line-through; color: var(--danger);">₹900.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 6px; font-weight: 700;">
+            <span style="color: var(--primary-bright);">Pocketa IMPS Fixed:</span>
+            <span style="color: var(--secondary); font-family: var(--font-mono);">₹2.00</span>
+          </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="glass-panel" style="padding: 28px;">
-      <p style="font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px;">"The bank withdrawal speed is astonishing. Flat ₹2 fee and the money reflects in my HDFC account before I close the app. Incredible engineering."</p>
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--secondary-tint); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-weight: 800;">A</div>
-        <div>
-          <div style="font-weight: 700;">Arjun Mehta</div>
-          <div style="font-size: 0.8rem; color: var(--muted);">Engineering Manager • Bengaluru</div>
+  <!-- Live Social Ledger Showcase (Stitch Component 5) -->
+  <section style="background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); border-radius: 28px; padding: 40px; margin-bottom: 80px;">
+    <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: center;">
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 6px; background: var(--surface-container); border: 1px solid var(--outline-variant); padding: 4px 12px; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; color: var(--primary-bright); margin-bottom: 16px;">
+          <span>🧾</span> Real-Time Social Ledger
+        </div>
+        <h2 style="font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; color: #FFFFFF;">
+          Every Rupee accounted for. Categorized in smoke and neon.
+        </h2>
+        <p style="color: var(--muted); font-size: 1rem; line-height: 1.6; margin-bottom: 24px;">
+          Pocketa eliminates cryptic banking statements. Transactions are paired with brand logos, merchant classifications, auto-split receipts, and immediate cashback deposits.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.95rem;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--primary-bright);">✓</span> Instant transaction notifications without SMS dropouts
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--primary-bright);">✓</span> Direct download of RBI-compliant GST audit statements
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--primary-bright);">✓</span> Live currency conversion rates on international RuPay transactions
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Mockup Ledger Table -->
+      <div class="glass-panel" style="padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--line); padding-bottom: 12px;">
+          <div>
+            <div style="font-weight: 700; color: #FFFFFF; font-size: 1rem;">Recent Activity</div>
+            <div style="font-size: 0.75rem; color: var(--muted);">Live Mesh Ledger</div>
+          </div>
+          <span class="badge badge-success">● Network Active</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Item 1 -->
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 10px; background: rgba(39, 43, 42, 0.4);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(234, 88, 12, 0.2); color: #ea580c; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🍕</div>
+              <div>
+                <div style="font-weight: 700; font-size: 0.9rem; color: #FFFFFF;">Swiggy Gourmet</div>
+                <div style="font-size: 0.75rem; color: var(--muted);">Dining • Today, 9:15 PM</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 700; color: #FFFFFF; font-family: var(--font-mono); font-size: 0.95rem;">- ₹1,240.00</div>
+              <div style="font-size: 0.7rem; color: var(--tertiary);">38 Gem Coins</div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 10px; background: rgba(39, 43, 42, 0.4);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 38px; height: 38px; border-radius: 10px; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">💼</div>
+              <div>
+                <div style="font-weight: 700; font-size: 0.9rem; color: #FFFFFF;">Payroll Deposit</div>
+                <div style="font-size: 0.75rem; color: var(--muted);">Razorpay Technologies • Yesterday</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 700; color: var(--secondary); font-family: var(--font-mono); font-size: 0.95rem;">+ ₹1,25,000.00</div>
+              <div style="font-size: 0.7rem; color: var(--primary-bright);">Zero Deductions</div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 10px; background: rgba(39, 43, 42, 0.4);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 38px; height: 38px; border-radius: 10px; background: var(--secondary-tint); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🤲</div>
+              <div>
+                <div style="font-weight: 700; font-size: 0.9rem; color: #FFFFFF;">Rohan K. (Split Pay)</div>
+                <div style="font-size: 0.75rem; color: var(--muted);">@rohan.k • Mumbai Dinner</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 700; color: var(--secondary); font-family: var(--font-mono); font-size: 0.95rem;">+ ₹850.00</div>
+              <div style="font-size: 0.7rem; color: var(--muted);">Instant Wallet Credit</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Social Proof & Testimonials (Stitch Component 6) -->
+  <section style="margin-bottom: 80px;">
+    <div style="text-align: center; max-width: 600px; margin: 0 auto 40px auto;">
+      <span style="font-size: 0.8rem; font-weight: 700; color: var(--tertiary); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 10px;">
+        MEMBERS ONLY
+      </span>
+      <h2 style="font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; color: #FFFFFF;">
+        Trusted by India’s founders, operators, and creators.
+      </h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+      <div class="glass-panel" style="padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
+        <p style="font-size: 1rem; line-height: 1.6; color: var(--ink); font-style: italic; margin-bottom: 20px;">
+          "The latency drop on UPI transfers via @handle is staggering. Normal banking apps would time out at airport merchants; Pocketa confirms in less than a second."
+        </p>
+        <div style="border-top: 1px solid var(--line); padding-top: 14px; display: flex; align-items: center; gap: 12px;">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-weight: 700;">AK</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem; color: #FFFFFF;">Aditya Kashyap</div>
+            <div style="font-size: 0.75rem; color: var(--muted);">Founder & CEO, ScaleGraph Bangalore</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-panel" style="padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
+        <p style="font-size: 1rem; line-height: 1.6; color: var(--ink); font-style: italic; margin-bottom: 20px;">
+          "The physical titanium card paired with the smoked obsidian UI is pure art. It feels like CRED's typography married Revolut’s frictionless engineering."
+        </p>
+        <div style="border-top: 1px solid var(--line); padding-top: 14px; display: flex; align-items: center; gap: 12px;">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--secondary-tint); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-weight: 700;">SM</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem; color: #FFFFFF;">Sneha Mukherjee</div>
+            <div style="font-size: 0.75rem; color: var(--muted);">Design Director, HyperShift Mumbai</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-panel" style="padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
+        <p style="font-size: 1rem; line-height: 1.6; color: var(--ink); font-style: italic; margin-bottom: 20px;">
+          "Flat ₹2 cashouts to our HDFC salary accounts saved our group thousands during our Goa offsite. Bill splitting without awkward reminders is golden."
+        </p>
+        <div style="border-top: 1px solid var(--line); padding-top: 14px; display: flex; align-items: center; gap: 12px;">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--tertiary-tint); color: var(--tertiary); display: flex; align-items: center; justify-content: center; font-weight: 700;">VR</div>
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem; color: #FFFFFF;">Vikram Rao</div>
+            <div style="font-size: 0.75rem; color: var(--muted);">General Partner, Matrix Horizon Delhi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final Call to Action Waitlist Banner -->
+  <section style="background: linear-gradient(135deg, rgba(11, 61, 46, 0.8) 0%, rgba(15, 157, 118, 0.5) 60%, rgba(52, 211, 153, 0.2) 100%); border: 1px solid rgba(101, 219, 176, 0.4); border-radius: 28px; padding: 60px 40px; text-align: center; box-shadow: var(--shadow-lg);">
+    <h2 style="font-size: 2.8rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em; margin-bottom: 16px;">
+      Upgrade your financial lifestyle today.
+    </h2>
+    <p style="color: var(--ink); font-size: 1.15rem; max-width: 600px; margin: 0 auto 36px auto; opacity: 0.9;">
+      Join 120,000+ members enjoying instant @handle transfers, smart bill splits, and flat ₹2 bank cashouts.
+    </p>
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <a href="/signup" class="btn btn-primary" style="height: 52px; padding: 0 40px; font-size: 1.05rem; border-radius: 9999px;">
+        Open Your Free Account →
+      </a>
+      <a href="/fees" class="btn btn-outline" style="height: 52px; padding: 0 32px; font-size: 1.05rem; border-radius: 9999px;">
+        View Transparent Pricing
+      </a>
+    </div>
+  </section>
 </div>
 {{end}}

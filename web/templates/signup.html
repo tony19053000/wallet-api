@@ -1,12 +1,17 @@
 {{define "content"}}
-<div style="max-width: 440px; margin: 40px auto;">
-  <div class="card">
-    <h2 style="font-size: 1.6rem; text-align: center; margin-bottom: 8px;">Create your Pocketa Wallet</h2>
-    <p style="color: var(--muted); text-align: center; font-size: 0.9rem; margin-bottom: 24px;">Instant signup with your handle and mobile number.</p>
+<div style="max-width: 480px; margin: 40px auto;">
+  <div class="card" style="padding: 36px; box-shadow: var(--shadow-lg); border: 1px solid rgba(101, 219, 176, 0.35);">
+    <div style="text-align: center; margin-bottom: 28px;">
+      <div style="width: 48px; height: 48px; border-radius: 14px; background: var(--primary-tint); color: var(--primary-bright); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 12px; border: 1px solid rgba(101, 219, 176, 0.4);">
+        ◆
+      </div>
+      <h2 style="font-size: 1.7rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">Claim Your Pocketa Handle</h2>
+      <p style="color: var(--muted); font-size: 0.88rem; margin-top: 4px;">Instant activation with basic KYC and zero paperwork.</p>
+    </div>
 
     <form onsubmit="event.preventDefault(); submitSignup(this);">
       <div class="form-group">
-        <label class="form-label">Full Name</label>
+        <label class="form-label">Full Legal Name</label>
         <input type="text" name="name" class="form-control" placeholder="Riya Sharma" required>
       </div>
 
@@ -16,39 +21,57 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label">Phone Number</label>
-        <input type="tel" name="phone" class="form-control" placeholder="+91 98201 44521" required>
+        <label class="form-label">Mobile Number</label>
+        <div style="position: relative;">
+          <span style="position: absolute; left: 14px; top: 13px; font-size: 0.88rem; color: var(--muted); font-weight: 700;">+91</span>
+          <input type="tel" name="phone" class="form-control" style="padding-left: 50px;" placeholder="98201 44521" required>
+        </div>
       </div>
 
       <div class="form-group">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <label class="form-label" style="margin-bottom: 0;">Choose Handle</label>
-          <span id="handle-status" style="font-size: 0.8rem; font-weight: 600;"></span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label class="form-label" style="margin-bottom: 0;">Unique @Handle</label>
+          <span id="handle-preview" style="font-size: 0.75rem; color: var(--secondary); font-family: var(--font-mono);">pocketa.money/@...</span>
         </div>
-        <input type="text" name="handle" class="form-control" placeholder="@riya.s" oninput="checkHandleAvailability(this)" required>
+        <input type="text" name="handle" class="form-control" placeholder="riya.s" oninput="updateHandlePreview(this.value)" required>
       </div>
 
       <div class="form-group">
         <label class="form-label">Password</label>
-        <input type="password" name="password" class="form-control" placeholder="••••••••" required minlength="6">
+        <input type="password" name="password" class="form-control" placeholder="Minimum 6 characters" required minlength="6">
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">Create Account</button>
+      <button type="submit" id="btn-signup" class="btn btn-primary btn-block" style="height: 50px; font-size: 1.05rem; margin-top: 10px;">
+        Open Free Account →
+      </button>
+
+      <div style="margin-top: 16px; font-size: 0.75rem; color: var(--muted); text-align: center; line-height: 1.4;">
+        By continuing, you agree to Pocketa's <a href="/terms" style="color: var(--primary-bright);">Terms of Service</a> and <a href="/privacy" style="color: var(--primary-bright);">Privacy Policy</a>.
+      </div>
     </form>
 
-    <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--muted);">
-      Already have an account? <a href="/login" style="font-weight: 600;">Log in</a>
+    <div style="text-align: center; margin-top: 24px; font-size: 0.88rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px;">
+      Already have an account? <a href="/login" style="font-weight: 700; color: var(--secondary);">Sign in</a>
     </div>
   </div>
 </div>
 
 <script>
+  function updateHandlePreview(val) {
+    const clean = val.replace(/^@/, '').toLowerCase().trim();
+    document.getElementById('handle-preview').innerText = clean ? `pocketa.money/@${clean}` : 'pocketa.money/@...';
+  }
+
   async function submitSignup(form) {
+    const btn = document.getElementById('btn-signup');
+    btn.disabled = true;
+    btn.innerText = 'Creating Account...';
+
     const payload = {
       name: form.name.value,
       email: form.email.value,
       phone: form.phone.value,
-      handle: form.handle.value,
+      handle: form.handle.value.replace(/^@/, '').trim(),
       password: form.password.value
     };
 
@@ -60,13 +83,17 @@
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('Account created successfully!');
-        window.location.href = '/app';
+        showToast('Account created successfully! Welcome to Pocketa.');
+        setTimeout(() => window.location.href = '/app', 500);
       } else {
         showToast(data.error?.message || 'Signup failed', 'error');
+        btn.disabled = false;
+        btn.innerText = 'Open Free Account →';
       }
     } catch (e) {
-      showToast('Network error', 'error');
+      showToast('Network error during account registration', 'error');
+      btn.disabled = false;
+      btn.innerText = 'Open Free Account →';
     }
   }
 </script>

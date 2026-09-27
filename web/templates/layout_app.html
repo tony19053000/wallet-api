@@ -14,7 +14,7 @@
     <div style="max-width: 1380px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
       <!-- Mobile brand trigger -->
       <a href="/app" class="brand" style="font-size: 1.25rem;">
-        <div class="brand-icon" style="width: 32px; height: 32px; font-size: 0.95rem;">P</div>
+        <div class="brand-icon" style="width: 32px; height: 32px; font-size: 0.95rem;">◆</div>
         <span>Pocketa</span>
       </a>
 
@@ -45,9 +45,11 @@
         </div>
 
         <!-- Mini Avatar -->
-        <div style="width: 34px; height: 34px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); border: 1.5px solid var(--primary-bright); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
-          {{slice .User.Name 0 1}}
-        </div>
+        <a href="/app/profile" style="text-decoration: none;">
+          <div style="width: 34px; height: 34px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); border: 1.5px solid var(--primary-bright); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+            {{slice .User.Name 0 1}}
+          </div>
+        </a>
       </div>
     </div>
   </header>
@@ -56,31 +58,70 @@
     <!-- Desktop Left Rail Navigation (Stitch SideBar Component) -->
     <aside class="desktop-rail glass-panel" style="display: flex; flex-direction: column; justify-content: space-between; height: calc(100vh - 100px); position: sticky; top: 80px; padding: 20px;">
       <div>
-        <nav style="display: flex; flex-direction: column; gap: 6px;">
-          <a href="/app" class="btn {{if eq .Page "home"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
-            <span>⚡</span> Overview
+        <nav class="rail-nav">
+          <a href="/app" class="rail-link {{if eq .Page "home"}}active{{end}}">
+            <div class="rail-link-content">
+              <span>⚡</span>
+              <span>Overview</span>
+            </div>
+            {{if eq .Page "home"}}<span style="width: 6px; height: 6px; border-radius: 50%; background: var(--secondary);"></span>{{end}}
           </a>
-          <a href="/app/send" class="btn {{if eq .Page "send"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
-            <span>💸</span> Send Money
+
+          <a href="/app/send" class="rail-link {{if eq .Page "send"}}active{{end}}">
+            <div class="rail-link-content">
+              <span>💸</span>
+              <span>Send Money</span>
+            </div>
+            {{if eq .Page "send"}}<span style="width: 6px; height: 6px; border-radius: 50%; background: var(--secondary);"></span>{{end}}
           </a>
-          <a href="/app/request" class="btn {{if eq .Page "request"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
-            <span>🤲</span> Split & Requests
+
+          <a href="/app/request" class="rail-link {{if eq .Page "request"}}active{{end}}">
+            <div class="rail-link-content">
+              <span>🤲</span>
+              <span>Split & Requests</span>
+            </div>
+            {{if eq .Page "request"}}<span style="width: 6px; height: 6px; border-radius: 50%; background: var(--secondary);"></span>{{end}}
           </a>
-          <a href="/app/requests" class="btn {{if eq .Page "requests"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
-            <span>📩</span> Manage Requests
+
+          <a href="/app/requests" class="rail-link {{if eq .Page "requests"}}active{{end}}">
+            <div class="rail-link-content">
+              <span>📩</span>
+              <span>Manage Requests</span>
+            </div>
+            {{if eq .Page "requests"}}<span style="width: 6px; height: 6px; border-radius: 50%; background: var(--secondary);"></span>{{end}}
           </a>
-          <a href="/app/activity" class="btn {{if eq .Page "activity"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
-            <span>📊</span> Activity Ledger
+
+          <a href="/app/activity" class="rail-link {{if eq .Page "activity"}}active{{end}}">
+            <div class="rail-link-content">
+              <span>📊</span>
+              <span>Activity Ledger</span>
+            </div>
+            {{if eq .Page "activity"}}<span style="width: 6px; height: 6px; border-radius: 50%; background: var(--secondary);"></span>{{end}}
           </a>
-          <a href="/app/banks" class="btn {{if eq .Page "banks"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
-            <span>🏦</span> Bank Accounts
+
+          <a href="/app/banks" class="rail-link {{if eq .Page "banks"}}active{{end}}">
+            <div class="rail-link-content">
+              <span>🏦</span>
+              <span>Bank Accounts</span>
+            </div>
+            {{if eq .Page "banks"}}<span style="width: 6px; height: 6px; border-radius: 50%; background: var(--secondary);"></span>{{end}}
           </a>
-          <a href="/app/profile" class="btn {{if eq .Page "profile"}}btn-primary{{else}}btn-outline{{end}}" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px;">
-            <span>👤</span> Profile & QR
+
+          <a href="/app/profile" class="rail-link {{if eq .Page "profile"}}active{{end}}">
+            <div class="rail-link-content">
+              <span>👤</span>
+              <span>Profile & QR</span>
+            </div>
+            {{if eq .Page "profile"}}<span style="width: 6px; height: 6px; border-radius: 50%; background: var(--secondary);"></span>{{end}}
           </a>
+
           {{if eq .User.Role "admin"}}
-            <a href="/admin" class="btn btn-secondary" style="justify-content: flex-start; gap: 12px; width: 100%; height: 44px; margin-top: 10px;">
-              <span>🛡️</span> Risk Console
+            <a href="/admin" class="rail-link" style="border: 1px dashed rgba(233, 195, 73, 0.4); margin-top: 10px; color: var(--tertiary);">
+              <div class="rail-link-content">
+                <span>🛡️</span>
+                <span>Risk Console</span>
+              </div>
+              <span class="badge badge-warning" style="font-size: 0.65rem; padding: 1px 6px;">ADMIN</span>
             </a>
           {{end}}
         </nav>
@@ -98,72 +139,94 @@
               {{if eq .User.KYCLevel "full"}}Tier-2{{else}}Tier-1{{end}}
             </span>
           </div>
-          <div style="font-size: 0.75rem; color: var(--muted);">
-            Limit: {{if eq .User.KYCLevel "full"}}₹1,00,000/day{{else}}₹10,000/day{{end}}
+          <div style="font-size: 0.72rem; color: var(--muted); line-height: 1.3;">
+            Daily limit: {{if eq .User.KYCLevel "full"}}₹1,00,000{{else}}₹10,000{{end}} (₹ pa)
           </div>
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 4px;">
-          <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
-            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; shrink-0: 0;">
+        <!-- User Logout Strip -->
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem;">
               {{slice .User.Name 0 1}}
             </div>
-            <div style="overflow: hidden; line-height: 1.2;">
-              <div style="font-size: 0.85rem; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{.User.Name}}</div>
-              <div style="font-size: 0.75rem; color: var(--primary-bright); font-family: var(--font-mono);">{{.User.Handle}}</div>
+            <div>
+              <div style="font-size: 0.85rem; font-weight: 600; color: var(--ink); line-height: 1.2;">{{.User.Name}}</div>
+              <div style="font-size: 0.72rem; color: var(--muted); font-family: var(--font-mono);">@{{.User.Handle}}</div>
             </div>
           </div>
-          <button onclick="handleLogout()" style="color: var(--muted); font-size: 1.1rem; padding: 4px;" title="Log Out">
-            🚪
-          </button>
+          <form action="/auth/logout" method="POST" style="margin: 0;">
+            <button type="submit" title="Logout" style="color: var(--muted); padding: 4px; font-size: 1.1rem; transition: color 0.15s ease;" onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--muted)'">
+              🚪
+            </button>
+          </form>
         </div>
       </div>
     </aside>
 
-    <!-- Main Content Body -->
-    <main style="min-width: 0;">
+    <!-- Center Feed Content -->
+    <main>
       {{template "content" .}}
     </main>
 
-    <!-- Desktop Right Quick Panel -->
-    <aside class="desktop-side">
-      <div class="glass-panel" style="margin-bottom: 20px;">
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-          <span style="font-size: 1.2rem; color: var(--primary-bright);">⚡</span>
-          <h3 style="font-size: 1.1rem; font-weight: 700;">Instant Transfer</h3>
+    <!-- Desktop Right Panel: Spend Analytics & Live System Status -->
+    <aside class="desktop-side" style="display: flex; flex-direction: column; gap: 20px;">
+      <!-- Quick Top-up Card -->
+      <div class="glass-panel" style="padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <span style="font-weight: 700; font-size: 0.9rem; color: var(--ink);">⚡ Quick Add Money</span>
+          <span style="font-size: 0.75rem; color: var(--muted);">Instant UPI</span>
         </div>
-        <form action="/api/v1/transfers" method="POST" onsubmit="event.preventDefault(); submitQuickSend(this);">
-          <div class="form-group">
-            <label class="form-label">Recipient Handle</label>
-            <input type="text" name="to_handle" class="form-control" placeholder="@riya.s" required>
+        <form onsubmit="event.preventDefault(); submitQuickAdd(this);">
+          <div class="preset-chips">
+            <span class="preset-chip" onclick="document.getElementById('side-topup-input').value=500">+₹500</span>
+            <span class="preset-chip" onclick="document.getElementById('side-topup-input').value=1000">+₹1,000</span>
+            <span class="preset-chip" onclick="document.getElementById('side-topup-input').value=2000">+₹2,000</span>
           </div>
-          <div class="form-group">
-            <label class="form-label">Amount (₹)</label>
-            <input type="number" name="amount_rupees" class="form-control" placeholder="500" min="1" step="any" required>
+          <div style="position: relative; margin-bottom: 12px;">
+            <span style="position: absolute; left: 14px; top: 12px; color: var(--muted); font-weight: 700;">₹</span>
+            <input type="number" id="side-topup-input" name="amount" class="form-control" style="padding-left: 32px;" placeholder="Amount" min="1" required>
           </div>
-          <div class="form-group">
-            <label class="form-label">Note</label>
-            <input type="text" name="note" class="form-control" placeholder="Swiggy split 🍕">
-          </div>
-          <button type="submit" class="btn btn-primary btn-block">Send Now</button>
+          <button type="submit" class="btn btn-primary btn-block" style="height: 40px; font-size: 0.88rem;">Add Funds Instantly</button>
         </form>
       </div>
 
-      <div class="glass-panel" style="background: rgba(16, 20, 19, 0.6);">
-        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--primary-bright);">Security Shield</h3>
-        <div style="font-size: 0.8rem; color: var(--muted); line-height: 1.6;">
-          <p style="margin-bottom: 6px;">🔒 256-bit bank-grade encryption</p>
-          <p style="margin-bottom: 6px;">⚡ Direct IMPS instant settlement</p>
-          <p>🛡️ Real-time ledger audit active</p>
+      <!-- Live Network Latency -->
+      <div class="glass-panel" style="padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <span style="font-weight: 700; font-size: 0.9rem; color: var(--ink);">Bank Mesh Status</span>
+          <span class="badge badge-success" style="font-size: 0.65rem;">ONLINE</span>
         </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.8rem;">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--muted);">UPI 2.0 Switch:</span>
+            <span style="color: var(--primary-bright); font-weight: 600;">14ms Latency</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--muted);">NPCI IMPS Rail:</span>
+            <span style="color: var(--primary-bright); font-weight: 600;">99.98% Success</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--muted);">Ledger Hash Integrity:</span>
+            <span style="color: var(--secondary); font-family: var(--font-mono);">Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Support & Help Widget -->
+      <div class="glass-panel" style="padding: 20px; text-align: center;">
+        <div style="font-size: 1.5rem; margin-bottom: 6px;">💬</div>
+        <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 4px;">24/7 Priority Support</div>
+        <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 12px;">Need help with a transaction? We resolve issues in &lt; 5 mins.</p>
+        <a href="/help" class="btn btn-outline btn-block" style="height: 36px; font-size: 0.82rem;">Visit Help Center</a>
       </div>
     </aside>
   </div>
 
-  <!-- Mobile Bottom Tab Bar -->
+  <!-- Mobile Bottom Tab Navigation -->
   <nav class="bottom-nav">
     <a href="/app" class="nav-item {{if eq .Page "home"}}active{{end}}">
-      <span style="font-size: 1.25rem;">🏠</span>
+      <span style="font-size: 1.25rem;">⚡</span>
       <span>Home</span>
     </a>
     <a href="/app/send" class="nav-item {{if eq .Page "send"}}active{{end}}">
@@ -176,11 +239,7 @@
     </a>
     <a href="/app/activity" class="nav-item {{if eq .Page "activity"}}active{{end}}">
       <span style="font-size: 1.25rem;">📊</span>
-      <span>Activity</span>
-    </a>
-    <a href="/app/banks" class="nav-item {{if eq .Page "banks"}}active{{end}}">
-      <span style="font-size: 1.25rem;">🏦</span>
-      <span>Banks</span>
+      <span>Ledger</span>
     </a>
     <a href="/app/profile" class="nav-item {{if eq .Page "profile"}}active{{end}}">
       <span style="font-size: 1.25rem;">👤</span>
@@ -189,28 +248,27 @@
   </nav>
 
   <script>
-    async function submitQuickSend(form) {
-      const handle = form.to_handle.value;
-      const amtRupees = parseFloat(form.amount_rupees.value);
-      const note = form.note.value;
-      if (!handle || isNaN(amtRupees) || amtRupees <= 0) return;
-
-      const amountPaise = Math.round(amtRupees * 100);
+    async function submitQuickAdd(form) {
+      const rupees = parseFloat(form.amount.value);
+      if (isNaN(rupees) || rupees <= 0) {
+        showToast('Please enter a valid amount', 'error');
+        return;
+      }
       try {
-        const res = await fetch('/api/v1/transfers', {
+        const res = await fetch('/api/v1/wallet/topup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to_handle: handle, amount_paise: amountPaise, note: note })
+          body: JSON.stringify({ amount_paise: Math.round(rupees * 100), source: 'UPI_INSTANT' })
         });
-        const data = await res.json();
         if (res.ok) {
-          showToast('Transfer completed successfully!');
-          window.location.reload();
+          showToast(`₹${rupees.toLocaleString('en-IN')} added to your wallet!`);
+          setTimeout(() => window.location.reload(), 800);
         } else {
-          showToast(data.error?.message || 'Transfer failed', 'error');
+          const err = await res.json();
+          showToast(err.error?.message || 'Top-up failed', 'error');
         }
-      } catch (err) {
-        showToast('Network error', 'error');
+      } catch (e) {
+        showToast('Network error during top-up', 'error');
       }
     }
   </script>

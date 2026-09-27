@@ -198,7 +198,23 @@ func (h *Handler) AppAdd(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) AppSend(w http.ResponseWriter, r *http.Request) {
-	h.renderApp(w, r, "app_send", "Send Money", "send", nil)
+	token := httpx.ExtractToken(r)
+	u, err := h.authSvc.GetUserByToken(token)
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	wRes, _ := h.walletSvc.GetWalletResponse(u.ID)
+	balStr := "₹0.00"
+	if wRes != nil {
+		balStr = httpx.FormatPaise(wRes.BalancePaise)
+	}
+
+	h.renderApp(w, r, "app_send", "Send Money", "send", map[string]any{
+		"Wallet":           wRes,
+		"FormattedBalance": balStr,
+	})
 }
 
 func (h *Handler) AppReceipt(w http.ResponseWriter, r *http.Request) {

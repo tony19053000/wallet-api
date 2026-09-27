@@ -1,57 +1,109 @@
 {{define "content"}}
-<div style="max-width: 500px; margin: 0 auto;">
-  <div class="card">
-    <div style="display: flex; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 20px;">
-      <button class="btn btn-primary" id="tab-request-btn" style="flex: 1; height: 38px; font-size: 0.9rem;" onclick="switchMode('request')">Single Request</button>
-      <button class="btn btn-outline" id="tab-split-btn" style="flex: 1; height: 38px; font-size: 0.9rem;" onclick="switchMode('split')">Split Bill</button>
+<div style="max-width: 540px; margin: 0 auto;">
+  <div class="card" style="padding: 32px;">
+    <!-- Pill Mode Switcher -->
+    <div class="pill-tabs">
+      <div class="pill-tab active" id="tab-request-btn" onclick="switchMode('request')">
+        <span>📩 Single Request</span>
+      </div>
+      <div class="pill-tab" id="tab-split-btn" onclick="switchMode('split')">
+        <span>🍕 Split a Bill</span>
+      </div>
     </div>
 
-    <!-- Single Request Mode -->
+    <!-- Mode 1: Single Request -->
     <div id="mode-request">
-      <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Request Money</h2>
-      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 20px;">Send a payment request to a friend's @handle.</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">Request Money</h2>
+          <p style="color: var(--muted); font-size: 0.88rem;">Request funds from any friend on Pocketa.</p>
+        </div>
+        <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--secondary-tint); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 1px solid rgba(69, 223, 164, 0.3);">
+          🤲
+        </div>
+      </div>
 
       <form onsubmit="event.preventDefault(); submitSingleRequest(this);">
         <div class="form-group">
           <label class="form-label">Request From (@handle)</label>
           <input type="text" name="to_handle" class="form-control" placeholder="@arjun.m" required>
         </div>
+
         <div class="form-group">
           <label class="form-label">Amount (₹)</label>
-          <input type="number" name="amount_rupees" class="form-control" placeholder="500" min="1" step="any" required>
+          <div style="position: relative;">
+            <span style="position: absolute; left: 16px; top: 12px; font-size: 1.1rem; color: var(--muted); font-weight: 700;">₹</span>
+            <input type="number" name="amount_rupees" class="form-control" style="padding-left: 36px; font-size: 1.1rem; font-weight: 700;" placeholder="500.00" min="1" step="any" required>
+          </div>
         </div>
+
         <div class="form-group">
-          <label class="form-label">Note</label>
-          <input type="text" name="note" class="form-control" placeholder="Swiggy dinner share 🍕" required>
+          <label class="form-label">Note / Purpose</label>
+          <input type="text" id="single-req-note" name="note" class="form-control" placeholder="Swiggy dinner share 🍕" required>
+          <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
+            <span class="preset-chip" style="font-size: 0.75rem;" onclick="document.getElementById('single-req-note').value='Swiggy dinner 🍕'">Dinner 🍕</span>
+            <span class="preset-chip" style="font-size: 0.75rem;" onclick="document.getElementById('single-req-note').value='Flat wifi & electricity ⚡'">Bills ⚡</span>
+            <span class="preset-chip" style="font-size: 0.75rem;" onclick="document.getElementById('single-req-note').value='Uber cab fare 🚕'">Cab 🚕</span>
+            <span class="preset-chip" style="font-size: 0.75rem;" onclick="document.getElementById('single-req-note').value='Movie tickets 🍿'">Movie 🍿</span>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Send Request</button>
+
+        <button type="submit" id="btn-single-req" class="btn btn-primary btn-block" style="height: 50px; font-size: 1.05rem;">
+          Send Payment Request →
+        </button>
       </form>
     </div>
 
-    <!-- Split Bill Mode -->
+    <!-- Mode 2: Split Bill -->
     <div id="mode-split" style="display: none;">
-      <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Split a Bill</h2>
-      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 20px;">Divide a total bill among several friends automatically.</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">Intelligent Bill Split</h2>
+          <p style="color: var(--muted); font-size: 0.88rem;">Automatically split group expenses among friends.</p>
+        </div>
+        <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--tertiary-tint); color: var(--tertiary); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 1px solid rgba(233, 195, 73, 0.3);">
+          🍕
+        </div>
+      </div>
 
       <form onsubmit="event.preventDefault(); submitSplitBill(this);">
         <div class="form-group">
           <label class="form-label">Total Bill Amount (₹)</label>
-          <input type="number" id="split-total" name="total_rupees" class="form-control" placeholder="1200" min="1" step="any" oninput="calculateSplitShare()" required>
+          <div style="position: relative;">
+            <span style="position: absolute; left: 16px; top: 12px; font-size: 1.1rem; color: var(--muted); font-weight: 700;">₹</span>
+            <input type="number" id="split-total" name="total_rupees" class="form-control" style="padding-left: 36px; font-size: 1.1rem; font-weight: 700;" placeholder="2400.00" min="1" step="any" oninput="calculateSplitShare()" required>
+          </div>
         </div>
+
         <div class="form-group">
           <label class="form-label">Participant Handles (comma-separated)</label>
           <input type="text" id="split-handles" name="handles_str" class="form-control" placeholder="@riya.s, @arjun.m, @ananya.r" oninput="calculateSplitShare()" required>
+          <div style="display: flex; gap: 8px; margin-top: 8px;">
+            <span class="preset-chip" style="font-size: 0.75rem;" onclick="addHandleToSplit('@riya.s')">+ @riya.s</span>
+            <span class="preset-chip" style="font-size: 0.75rem;" onclick="addHandleToSplit('@arjun.m')">+ @arjun.m</span>
+            <span class="preset-chip" style="font-size: 0.75rem;" onclick="addHandleToSplit('@vikram.r')">+ @vikram.r</span>
+          </div>
         </div>
+
         <div class="form-group">
-          <label class="form-label">Note / Title</label>
+          <label class="form-label">Bill Description / Title</label>
           <input type="text" name="note" class="form-control" placeholder="Goa trip dinner 🏖️" required>
         </div>
 
-        <div style="background: var(--primary-tint); color: var(--primary); padding: 14px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.9rem; margin-bottom: 20px;" id="split-preview">
-          Enter total amount and handles to calculate per-person share.
+        <!-- Dynamic Calculation Card -->
+        <div id="split-preview-card" style="background: var(--surface-container-high); border: 1px solid rgba(101, 219, 176, 0.3); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 0.85rem; color: var(--muted);">Split Breakdown:</span>
+            <span id="split-per-head" style="font-weight: 800; font-size: 1.15rem; color: var(--secondary);">₹0.00 / person</span>
+          </div>
+          <div id="split-explainer" style="font-size: 0.75rem; color: var(--muted);">
+            Enter total amount and handles to preview automated paise allocation.
+          </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Send Split Requests</button>
+        <button type="submit" id="btn-split-req" class="btn btn-primary btn-block" style="height: 50px; font-size: 1.05rem;">
+          Dispatch Split Requests →
+        </button>
       </form>
     </div>
   </div>
@@ -67,35 +119,58 @@
     if (mode === 'request') {
       reqDiv.style.display = 'block';
       splitDiv.style.display = 'none';
-      reqBtn.className = 'btn btn-primary';
-      splitBtn.className = 'btn btn-outline';
+      reqBtn.classList.add('active');
+      splitBtn.classList.remove('active');
     } else {
       reqDiv.style.display = 'none';
       splitDiv.style.display = 'block';
-      reqBtn.className = 'btn btn-outline';
-      splitBtn.className = 'btn btn-primary';
+      reqBtn.classList.remove('active');
+      splitBtn.classList.add('active');
+    }
+  }
+
+  function addHandleToSplit(handle) {
+    const el = document.getElementById('split-handles');
+    const parts = el.value.split(',').map(s => s.trim()).filter(s => s.length > 0);
+    if (!parts.includes(handle)) {
+      parts.push(handle);
+      el.value = parts.join(', ');
+      calculateSplitShare();
     }
   }
 
   function calculateSplitShare() {
     const total = parseFloat(document.getElementById('split-total').value) || 0;
     const handlesStr = document.getElementById('split-handles').value;
-    const handles = handlesStr.split(',').map(h => h.trim()).filter(h => h.length > 0);
+    const handles = handlesStr.split(',').map(h => h.trim().replace(/^@/, '')).filter(h => h.length > 0);
 
-    const prevEl = document.getElementById('split-preview');
+    const perHeadEl = document.getElementById('split-per-head');
+    const explainerEl = document.getElementById('split-explainer');
+
     if (total <= 0 || handles.length === 0) {
-      prevEl.innerText = 'Enter total amount and handles to calculate per-person share.';
+      perHeadEl.innerText = '₹0.00 / person';
+      explainerEl.innerText = 'Enter total amount and handles to preview automated paise allocation.';
       return;
     }
 
     const share = (total / handles.length).toFixed(2);
-    prevEl.innerText = `💡 Each of the ${handles.length} friends will pay ₹${share}`;
+    perHeadEl.innerText = `₹${share} / person`;
+    explainerEl.innerHTML = `💡 Dispatches individual requests for <strong>${handles.length} friends</strong> with exact paise remainder distribution.`;
   }
 
   async function submitSingleRequest(form) {
-    const handle = form.to_handle.value;
+    const handle = form.to_handle.value.trim().replace(/^@/, '');
     const rupees = parseFloat(form.amount_rupees.value);
     const note = form.note.value;
+
+    if (!handle || isNaN(rupees) || rupees <= 0) {
+      showToast('Please enter a valid handle and amount', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-single-req');
+    btn.disabled = true;
+    btn.innerText = 'Sending Request...';
 
     const amountPaise = Math.round(rupees * 100);
     try {
@@ -106,38 +181,55 @@
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('Request sent successfully!');
-        window.location.href = '/app/requests';
+        showToast('Request sent to @' + handle + '!');
+        setTimeout(() => window.location.href = '/app/requests', 500);
       } else {
-        showToast(data.error?.message || 'Request failed', 'error');
+        showToast(data.error?.message || 'Failed to send request', 'error');
+        btn.disabled = false;
+        btn.innerText = 'Send Payment Request →';
       }
     } catch (e) {
-      showToast('Network error', 'error');
+      showToast('Network error while creating request', 'error');
+      btn.disabled = false;
+      btn.innerText = 'Send Payment Request →';
     }
   }
 
   async function submitSplitBill(form) {
-    const totalRupees = parseFloat(form.total_rupees.value);
+    const total = parseFloat(form.total_rupees.value);
     const handlesStr = form.handles_str.value;
     const note = form.note.value;
-    const handles = handlesStr.split(',').map(h => h.trim()).filter(h => h.length > 0);
 
-    const totalPaise = Math.round(totalRupees * 100);
+    const handles = handlesStr.split(',').map(h => h.trim().replace(/^@/, '')).filter(h => h.length > 0);
+    if (isNaN(total) || total <= 0 || handles.length === 0) {
+      showToast('Please enter a valid total and at least one friend handle', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-split-req');
+    btn.disabled = true;
+    btn.innerText = 'Splitting Bill...';
+
+    const totalPaise = Math.round(total * 100);
     try {
-      const res = await fetch('/api/v1/split', {
+      const res = await fetch('/api/v1/requests/split', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ handles, total_paise: totalPaise, note })
+        body: JSON.stringify({ total_paise: totalPaise, handles: handles, note: note })
       });
       const data = await res.json();
       if (res.ok) {
-        showToast(`Created ${data.count} split requests!`);
-        window.location.href = '/app/requests';
+        showToast(`Split into ${data.count} requests successfully!`);
+        setTimeout(() => window.location.href = '/app/requests', 500);
       } else {
-        showToast(data.error?.message || 'Split failed', 'error');
+        showToast(data.error?.message || 'Failed to split bill', 'error');
+        btn.disabled = false;
+        btn.innerText = 'Dispatch Split Requests →';
       }
     } catch (e) {
-      showToast('Network error', 'error');
+      showToast('Network error during bill split', 'error');
+      btn.disabled = false;
+      btn.innerText = 'Dispatch Split Requests →';
     }
   }
 </script>

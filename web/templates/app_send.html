@@ -1,64 +1,128 @@
 {{define "content"}}
-<div style="max-width: 500px; margin: 0 auto;">
-  <div class="card">
-    <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Send Money</h2>
-    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 24px;">Send instant peer-to-peer funds to any Pocketa @handle.</p>
+<div style="max-width: 540px; margin: 0 auto;">
+  <div class="card" style="padding: 32px;">
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">Send Money</h2>
+        <p style="color: var(--muted); font-size: 0.88rem;">Zero-fee peer-to-peer transfer to any Pocketa @handle.</p>
+      </div>
+      <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--primary-tint); color: var(--primary-bright); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 1px solid rgba(101, 219, 176, 0.3);">
+        💸
+      </div>
+    </div>
+
+    <!-- Available Balance Indicator -->
+    <div style="background: var(--surface-container-low); border: 1px solid var(--outline-variant); border-radius: var(--radius-md); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <span style="font-size: 0.85rem; color: var(--muted);">Available Balance:</span>
+      <span style="font-family: var(--font-sans); font-size: 1.1rem; font-weight: 800; color: #FFFFFF;" id="available-bal">
+        {{if .FormattedBalance}}{{.FormattedBalance}}{{else}}₹0.00{{end}}
+      </span>
+    </div>
 
     <form onsubmit="event.preventDefault(); submitSend(this);">
+      <!-- Recipient Input & Live Verification -->
       <div class="form-group">
         <label class="form-label">Recipient Handle</label>
-        <input type="text" name="to_handle" class="form-control" placeholder="@riya.s" required>
+        <div style="position: relative;">
+          <input type="text" id="recipient-handle" name="to_handle" class="form-control" placeholder="@riya.s or @arjun.m" style="padding-right: 110px;" oninput="debouncedHandleLookup(this.value)" required>
+          <div id="handle-status" style="position: absolute; right: 12px; top: 12px; font-size: 0.78rem; font-weight: 700; color: var(--muted);">
+            Type @handle
+          </div>
+        </div>
+        
+        <!-- Recipient Card Preview -->
+        <div id="recipient-card" style="display: none; margin-top: 10px; background: var(--surface-container-high); border: 1px solid rgba(101, 219, 176, 0.4); border-radius: var(--radius-md); padding: 12px; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div id="recipient-avatar" style="width: 34px; height: 34px; border-radius: 50%; background: var(--primary); color: #0b0f0e; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
+              R
+            </div>
+            <div>
+              <div id="recipient-name" style="font-size: 0.9rem; font-weight: 700; color: #FFFFFF;">Riya Sharma</div>
+              <div id="recipient-tag" style="font-size: 0.75rem; color: var(--primary-bright); font-family: var(--font-mono);">@riya.s</div>
+            </div>
+          </div>
+          <span class="badge badge-success" style="font-size: 0.65rem;">✓ Verified User</span>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Amount (₹)</label>
+      <!-- Quick Preset Amount Chips -->
+      <div class="preset-chips">
+        <span class="preset-chip" onclick="setRupees(200)">+₹200</span>
+        <span class="preset-chip" onclick="setRupees(500)">+₹500</span>
+        <span class="preset-chip" onclick="setRupees(1000)">+₹1,000</span>
+        <span class="preset-chip" onclick="setRupees(2000)">+₹2,000</span>
+        <span class="preset-chip" onclick="setRupees(5000)">+₹5,000</span>
+      </div>
+
+      <!-- Keypad Display -->
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label class="form-label">Transfer Amount</label>
         <div class="keypad-display" id="keypad-val">₹0.00</div>
         <input type="hidden" id="send-amount-rupees" name="amount_rupees" value="0">
       </div>
 
-      <!-- Quick Keypad -->
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
-        <button type="button" class="btn btn-outline" onclick="appendNum('1')">1</button>
-        <button type="button" class="btn btn-outline" onclick="appendNum('2')">2</button>
-        <button type="button" class="btn btn-outline" onclick="appendNum('3')">3</button>
-        <button type="button" class="btn btn-outline" onclick="appendNum('4')">4</button>
-        <button type="button" class="btn btn-outline" onclick="appendNum('5')">5</button>
-        <button type="button" class="btn btn-outline" onclick="appendNum('6')">6</button>
-        <button type="button" class="btn btn-outline" onclick="appendNum('7')">7</button>
-        <button type="button" class="btn btn-outline" onclick="appendNum('8')">8</button>
-        <button type="button" class="btn btn-outline" onclick="appendNum('9')">9</button>
-        <button type="button" class="btn btn-outline" onclick="clearNum()">C</button>
-        <button type="button" class="btn btn-outline" onclick="appendNum('0')">0</button>
-        <button type="button" class="btn btn-outline" onclick="backspaceNum()">⌫</button>
+      <!-- Tactile Keypad Grid -->
+      <div class="keypad-grid">
+        <button type="button" class="keypad-btn" onclick="appendNum('1')">1</button>
+        <button type="button" class="keypad-btn" onclick="appendNum('2')">2</button>
+        <button type="button" class="keypad-btn" onclick="appendNum('3')">3</button>
+        <button type="button" class="keypad-btn" onclick="appendNum('4')">4</button>
+        <button type="button" class="keypad-btn" onclick="appendNum('5')">5</button>
+        <button type="button" class="keypad-btn" onclick="appendNum('6')">6</button>
+        <button type="button" class="keypad-btn" onclick="appendNum('7')">7</button>
+        <button type="button" class="keypad-btn" onclick="appendNum('8')">8</button>
+        <button type="button" class="keypad-btn" onclick="appendNum('9')">9</button>
+        <button type="button" class="keypad-btn" style="color: var(--danger);" onclick="clearNum()">C</button>
+        <button type="button" class="keypad-btn" onclick="appendNum('0')">0</button>
+        <button type="button" class="keypad-btn" style="color: var(--muted);" onclick="backspaceNum()">⌫</button>
       </div>
 
+      <!-- Note / Purpose & Tags -->
       <div class="form-group">
-        <label class="form-label">Note (optional)</label>
-        <input type="text" id="send-note" name="note" class="form-control" placeholder="Chai ☕ or Rent share">
-        <div style="display: flex; gap: 8px; margin-top: 8px;">
-          <span style="cursor: pointer; background: var(--bg); padding: 4px 10px; border-radius: 12px; font-size: 0.85rem;" onclick="addEmoji('Goa trip 🏖️ fuel')">Goa trip 🏖️</span>
-          <span style="cursor: pointer; background: var(--bg); padding: 4px 10px; border-radius: 12px; font-size: 0.85rem;" onclick="addEmoji('Chai ☕')">Chai ☕</span>
-          <span style="cursor: pointer; background: var(--bg); padding: 4px 10px; border-radius: 12px; font-size: 0.85rem;" onclick="addEmoji('Swiggy dinner 🍕')">Dinner 🍕</span>
+        <label class="form-label">Add Note (Optional)</label>
+        <input type="text" id="send-note" name="note" class="form-control" placeholder="Chai ☕, Swiggy dinner 🍕, or Rent share">
+        <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+          <span class="preset-chip" style="font-size: 0.75rem;" onclick="addTag('Chai ☕')">Chai ☕</span>
+          <span class="preset-chip" style="font-size: 0.75rem;" onclick="addTag('Dinner 🍕')">Dinner 🍕</span>
+          <span class="preset-chip" style="font-size: 0.75rem;" onclick="addTag('Goa trip 🏖️')">Goa trip 🏖️</span>
+          <span class="preset-chip" style="font-size: 0.75rem;" onclick="addTag('Rent share 🏠')">Rent share 🏠</span>
+          <span class="preset-chip" style="font-size: 0.75rem;" onclick="addTag('Movie tickets 🍿')">Movie 🍿</span>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block">Confirm & Send</button>
+      <!-- Submit CTA -->
+      <button type="submit" id="btn-submit-send" class="btn btn-primary btn-block" style="height: 52px; font-size: 1.05rem; border-radius: var(--radius-md);">
+        Confirm & Send Instantly →
+      </button>
+
+      <!-- Trust Note -->
+      <div style="text-align: center; margin-top: 16px; font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <span style="color: var(--primary-bright);">🔒</span>
+        <span>256-Bit Encrypted Peer-to-Peer Transfer • Zero Fee</span>
+      </div>
     </form>
   </div>
 </div>
 
 <script>
   let currentVal = '0';
+  let lookupTimer = null;
 
   function updateKeypad() {
     const rupees = parseFloat(currentVal) || 0;
-    document.getElementById('keypad-val').innerText = '₹' + rupees.toLocaleString('en-IN');
+    document.getElementById('keypad-val').innerText = '₹' + rupees.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     document.getElementById('send-amount-rupees').value = rupees;
   }
 
   function appendNum(n) {
     if (currentVal === '0') currentVal = n;
     else if (currentVal.length < 7) currentVal += n;
+    updateKeypad();
+  }
+
+  function setRupees(val) {
+    currentVal = val.toString();
     updateKeypad();
   }
 
@@ -73,19 +137,65 @@
     updateKeypad();
   }
 
-  function addEmoji(txt) {
+  function addTag(txt) {
     document.getElementById('send-note').value = txt;
   }
 
+  function debouncedHandleLookup(val) {
+    clearTimeout(lookupTimer);
+    const clean = val.replace(/^@/, '').trim();
+    const statusEl = document.getElementById('handle-status');
+    const cardEl = document.getElementById('recipient-card');
+
+    if (!clean) {
+      statusEl.innerText = 'Type @handle';
+      statusEl.style.color = 'var(--muted)';
+      cardEl.style.display = 'none';
+      return;
+    }
+
+    statusEl.innerText = 'Checking...';
+    statusEl.style.color = 'var(--tertiary)';
+
+    lookupTimer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/v1/users/lookup?handle=${encodeURIComponent(clean)}`);
+        if (res.ok) {
+          const user = await res.json();
+          statusEl.innerText = '✓ Found';
+          statusEl.style.color = 'var(--primary-bright)';
+          document.getElementById('recipient-name').innerText = user.name;
+          document.getElementById('recipient-tag').innerText = '@' + user.handle;
+          document.getElementById('recipient-avatar').innerText = user.name.charAt(0);
+          cardEl.style.display = 'flex';
+        } else {
+          statusEl.innerText = '✕ Not found';
+          statusEl.style.color = 'var(--danger)';
+          cardEl.style.display = 'none';
+        }
+      } catch (e) {
+        statusEl.innerText = 'Network error';
+      }
+    }, 300);
+  }
+
   async function submitSend(form) {
-    const handle = form.to_handle.value;
+    const handle = form.to_handle.value.trim().replace(/^@/, '');
     const rupees = parseFloat(form.amount_rupees.value);
     const note = form.note.value;
 
-    if (!handle || isNaN(rupees) || rupees <= 0) {
-      showToast('Please enter a valid handle and amount', 'error');
+    if (!handle) {
+      showToast('Please enter a recipient handle', 'error');
       return;
     }
+    if (isNaN(rupees) || rupees <= 0) {
+      showToast('Please enter an amount greater than ₹0', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-submit-send');
+    btn.disabled = true;
+    btn.innerText = 'Processing Transfer...';
 
     const amountPaise = Math.round(rupees * 100);
     try {
@@ -96,14 +206,32 @@
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('Transfer completed!');
+        showToast('Transfer completed successfully!');
         window.location.href = `/app/transfers/${data.id}`;
       } else {
         showToast(data.error?.message || 'Transfer failed', 'error');
+        btn.disabled = false;
+        btn.innerText = 'Confirm & Send Instantly →';
       }
     } catch (e) {
-      showToast('Network error', 'error');
+      showToast('Network error while processing transfer', 'error');
+      btn.disabled = false;
+      btn.innerText = 'Confirm & Send Instantly →';
     }
   }
+
+  // Pre-fill from URL parameters if present
+  window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const to = params.get('to');
+    const amt = params.get('amount');
+    if (to) {
+      document.getElementById('recipient-handle').value = to;
+      debouncedHandleLookup(to);
+    }
+    if (amt && !isNaN(parseFloat(amt))) {
+      setRupees(parseFloat(amt));
+    }
+  });
 </script>
 {{end}}

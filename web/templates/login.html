@@ -1,44 +1,73 @@
 {{define "content"}}
-<div style="max-width: 420px; margin: 40px auto;">
-  <div class="card">
-    <h2 style="font-size: 1.6rem; text-align: center; margin-bottom: 8px;">Welcome back to Pocketa</h2>
-    <p style="color: var(--muted); text-align: center; font-size: 0.9rem; margin-bottom: 24px;">Log in to access your wallet, transfers, and bank accounts.</p>
+<div style="max-width: 440px; margin: 40px auto;">
+  <div class="card" style="padding: 36px; box-shadow: var(--shadow-lg); border: 1px solid rgba(101, 219, 176, 0.35);">
+    <div style="text-align: center; margin-bottom: 28px;">
+      <div style="width: 48px; height: 48px; border-radius: 14px; background: var(--primary-tint); color: var(--primary-bright); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 12px; border: 1px solid rgba(101, 219, 176, 0.4);">
+        ◆
+      </div>
+      <h2 style="font-size: 1.7rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">Welcome to Pocketa</h2>
+      <p style="color: var(--muted); font-size: 0.88rem; margin-top: 4px;">Sign in to access your wallet, peer-to-peer transfers, and ledger.</p>
+    </div>
 
     <form onsubmit="event.preventDefault(); submitLogin(this);">
       <div class="form-group">
         <label class="form-label">Email Address</label>
-        <input type="email" name="email" class="form-control" placeholder="riya@pocketa.money" required>
+        <input type="email" id="login-email" name="email" class="form-control" placeholder="riya@pocketa.money" required>
       </div>
 
       <div class="form-group">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <label class="form-label" style="margin-bottom: 0;">Password</label>
-          <a href="/forgot" style="font-size: 0.8rem;">Forgot password?</a>
+          <a href="/forgot" style="font-size: 0.8rem; color: var(--primary-bright);">Forgot password?</a>
         </div>
-        <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+        <input type="password" id="login-password" name="password" class="form-control" placeholder="••••••••" required>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">Log In</button>
+      <button type="submit" id="btn-login" class="btn btn-primary btn-block" style="height: 50px; font-size: 1.05rem; margin-top: 10px;">
+        Sign In to Account →
+      </button>
     </form>
 
-    <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--muted);">
-      Don't have an account? <a href="/signup" style="font-weight: 600;">Sign up</a>
+    <div style="text-align: center; margin-top: 24px; font-size: 0.88rem; color: var(--muted);">
+      Don't have an account? <a href="/signup" style="font-weight: 700; color: var(--secondary);">Open account</a>
     </div>
 
-    <!-- Quick Seeded Accounts Helper -->
-    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 0.8rem; color: var(--muted);">
-      <p style="font-weight: 600; margin-bottom: 8px; color: var(--ink);">Demo Seeded Credentials:</p>
-      <p>• <strong>User:</strong> riya@pocketa.money / riya-2026</p>
-      <p>• <strong>User:</strong> arjun@pocketa.money / arjun-2026</p>
-      <p>• <strong>Admin:</strong> risk@pocketa.money / pocketa-admin</p>
+    <!-- Quick Member Sign-In Selector -->
+    <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line);">
+      <div style="font-size: 0.78rem; font-weight: 700; color: var(--ink); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em;">
+        Quick Member Sign-in:
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button type="button" class="btn btn-outline" style="height: 38px; justify-content: space-between; padding: 0 14px; font-size: 0.82rem;" onclick="fillCreds('riya@pocketa.money', 'riya-2026')">
+          <span>👩 Riya Sharma (@riya.s)</span>
+          <span style="color: var(--primary-bright); font-size: 0.75rem;">Fill</span>
+        </button>
+        <button type="button" class="btn btn-outline" style="height: 38px; justify-content: space-between; padding: 0 14px; font-size: 0.82rem;" onclick="fillCreds('arjun@pocketa.money', 'arjun-2026')">
+          <span>👨 Arjun Mehta (@arjun.m)</span>
+          <span style="color: var(--primary-bright); font-size: 0.75rem;">Fill</span>
+        </button>
+        <button type="button" class="btn btn-outline" style="height: 38px; justify-content: space-between; padding: 0 14px; font-size: 0.82rem; border-color: rgba(233, 195, 73, 0.4);" onclick="fillCreds('risk@pocketa.money', 'pocketa-admin')">
+          <span>🛡️ Risk Operations Admin</span>
+          <span style="color: var(--tertiary); font-size: 0.75rem;">Admin</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
+  function fillCreds(email, pwd) {
+    document.getElementById('login-email').value = email;
+    document.getElementById('login-password').value = pwd;
+  }
+
   async function submitLogin(form) {
     const email = form.email.value;
     const password = form.password.value;
+    const btn = document.getElementById('btn-login');
+    btn.disabled = true;
+    btn.innerText = 'Authenticating...';
+
     try {
       const res = await fetch('/api/v1/auth/login', {
         method: 'POST',
@@ -47,13 +76,19 @@
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('Login successful!');
-        window.location.href = data.user.role === 'admin' ? '/admin' : '/app';
+        showToast('Authentication verified!');
+        setTimeout(() => {
+          window.location.href = data.user.role === 'admin' ? '/admin' : '/app';
+        }, 400);
       } else {
         showToast(data.error?.message || 'Invalid email or password', 'error');
+        btn.disabled = false;
+        btn.innerText = 'Sign In to Account →';
       }
     } catch (e) {
-      showToast('Network error', 'error');
+      showToast('Network error during authentication', 'error');
+      btn.disabled = false;
+      btn.innerText = 'Sign In to Account →';
     }
   }
 </script>

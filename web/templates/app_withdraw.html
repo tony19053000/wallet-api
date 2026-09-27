@@ -1,65 +1,106 @@
 {{define "content"}}
-<div style="max-width: 500px; margin: 0 auto;">
-  <div class="card">
-    <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Withdraw to Bank Account</h2>
-    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 24px;">Transfer funds from your Pocketa wallet directly to your Indian bank account.</p>
+<div style="max-width: 540px; margin: 0 auto;">
+  <div class="card" style="padding: 32px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">Instant Bank Cashout</h2>
+        <p style="color: var(--muted); font-size: 0.88rem;">24/7 IMPS bank transfer with transparent flat ₹2 fee.</p>
+      </div>
+      <div style="width: 44px; height: 44px; border-radius: 12px; background: var(--tertiary-tint); color: var(--tertiary); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 1px solid rgba(233, 195, 73, 0.3);">
+        🏦
+      </div>
+    </div>
 
     {{if .BankAccounts}}
       <form onsubmit="event.preventDefault(); submitWithdrawal(this);">
         <div class="form-group">
-          <label class="form-label">Select Bank Account</label>
-          <select name="bank_account_id" class="form-control" required>
+          <label class="form-label">Destination Bank Account</label>
+          <select name="bank_account_id" class="form-control" style="font-weight: 600;" required>
             {{range .BankAccounts}}
               <option value="{{.ID}}">{{.BankName}} •••• {{.AccountLast4}} ({{.AccountHolder}})</option>
             {{end}}
           </select>
         </div>
 
+        <!-- Quick Amount Presets -->
+        <div class="preset-chips">
+          <span class="preset-chip" onclick="setWdrAmt(500)">+₹500</span>
+          <span class="preset-chip" onclick="setWdrAmt(1000)">+₹1,000</span>
+          <span class="preset-chip" onclick="setWdrAmt(2500)">+₹2,500</span>
+          <span class="preset-chip" onclick="setWdrAmt(5000)">+₹5,000</span>
+        </div>
+
         <div class="form-group">
-          <label class="form-label">Withdrawal Amount (₹)</label>
-          <input type="number" id="wdr-amount" name="amount" class="form-control" placeholder="500" min="1" step="any" oninput="updateWdrBreakdown(this.value)" required>
-        </div>
-
-        <!-- Fee breakdown banner -->
-        <div id="wdr-banner" style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px; font-size: 0.9rem;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-            <span>Requested Amount:</span>
-            <span id="banner-req-amt" style="font-weight: 600;">₹0.00</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--muted);">
-            <span>Withdrawal Fee (Flat):</span>
-            <span>₹2.00</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 8px; font-weight: 700;">
-            <span>You'll receive in bank:</span>
-            <span id="banner-payout-amt" style="color: var(--primary);">₹0.00</span>
+          <label class="form-label">Cashout Amount (₹)</label>
+          <div style="position: relative;">
+            <span style="position: absolute; left: 16px; top: 12px; font-size: 1.1rem; color: var(--muted); font-weight: 700;">₹</span>
+            <input type="number" id="wdr-amount" name="amount" class="form-control" style="padding-left: 36px; font-size: 1.2rem; font-weight: 800;" placeholder="1000.00" min="1" step="any" oninput="updateWdrBreakdown(this.value)" required>
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Confirm Withdrawal</button>
+        <!-- Real-Time Transparency Fee Breakdown (Stitch Design) -->
+        <div id="wdr-banner" style="background: var(--surface-container-high); border: 1px solid rgba(101, 219, 176, 0.3); border-radius: var(--radius-md); padding: 18px; margin-bottom: 24px; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: var(--muted);">Requested Amount:</span>
+            <span id="banner-req-amt" style="font-weight: 700; color: #FFFFFF; font-family: var(--font-mono);">₹0.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted);">
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <span>Withdrawal Fee (Flat IMPS):</span>
+              <span class="badge badge-success" style="font-size: 0.65rem; padding: 1px 6px;">Zero %</span>
+            </div>
+            <span style="font-family: var(--font-mono); color: var(--tertiary);">₹2.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 10px; font-weight: 800; font-size: 1rem;">
+            <span style="color: var(--ink);">You'll receive in bank:</span>
+            <span id="banner-payout-amt" style="color: var(--secondary); font-family: var(--font-mono); font-size: 1.1rem;">₹0.00</span>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-submit-wdr" class="btn btn-primary btn-block" style="height: 50px; font-size: 1.05rem;">
+          Confirm Bank Cashout →
+        </button>
+
+        <div style="text-align: center; margin-top: 16px; font-size: 0.75rem; color: var(--muted);">
+          ⚡ Settled instantly via NPCI IMPS Switch. Funds typically credit in under 3 seconds.
+        </div>
       </form>
     {{else}}
-      <div style="text-align: center; padding: 30px 0;">
-        <p style="color: var(--muted); margin-bottom: 16px;">You haven't added a bank account yet.</p>
-        <a href="/app/banks" class="btn btn-primary">Add Bank Account Now</a>
+      <div style="text-align: center; padding: 40px 0;">
+        <div style="font-size: 2.5rem; margin-bottom: 12px;">🏦</div>
+        <p style="color: #FFFFFF; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">No bank account linked</p>
+        <p style="color: var(--muted); font-size: 0.88rem; margin-bottom: 20px;">You must link an Indian bank account before initiating cashouts.</p>
+        <a href="/app/banks" class="btn btn-primary">Link Bank Account Now →</a>
       </div>
     {{end}}
   </div>
 </div>
 
 <script>
+  function setWdrAmt(val) {
+    document.getElementById('wdr-amount').value = val;
+    updateWdrBreakdown(val);
+  }
+
   function updateWdrBreakdown(val) {
     const amt = parseFloat(val) || 0;
     const reqEl = document.getElementById('banner-req-amt');
     const payEl = document.getElementById('banner-payout-amt');
-    if (reqEl) reqEl.innerText = '₹' + amt.toFixed(2);
-    if (payEl) payEl.innerText = '₹' + Math.max(0, amt).toFixed(2);
+    if (reqEl) reqEl.innerText = '₹' + amt.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (payEl) payEl.innerText = '₹' + Math.max(0, amt).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
   async function submitWithdrawal(form) {
     const bankAccountID = form.bank_account_id.value;
     const rupees = parseFloat(form.amount.value);
-    if (!bankAccountID || isNaN(rupees) || rupees <= 0) return;
+    if (!bankAccountID || isNaN(rupees) || rupees <= 0) {
+      showToast('Please enter a valid amount', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-submit-wdr');
+    btn.disabled = true;
+    btn.innerText = 'Processing Cashout...';
 
     const amountPaise = Math.round(rupees * 100);
     try {
@@ -70,13 +111,17 @@
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('Withdrawal completed!');
-        window.location.href = '/app';
+        showToast('Cashout dispatched successfully!');
+        setTimeout(() => window.location.href = '/app', 600);
       } else {
-        showToast(data.error?.message || 'Withdrawal failed', 'error');
+        showToast(data.error?.message || 'Cashout failed', 'error');
+        btn.disabled = false;
+        btn.innerText = 'Confirm Bank Cashout →';
       }
     } catch (e) {
-      showToast('Network error', 'error');
+      showToast('Network error during withdrawal', 'error');
+      btn.disabled = false;
+      btn.innerText = 'Confirm Bank Cashout →';
     }
   }
 </script>
