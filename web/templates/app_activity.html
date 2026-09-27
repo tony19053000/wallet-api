@@ -1,0 +1,79 @@
+{{define "content"}}
+<div style="display: flex; flex-direction: column; gap: 20px;">
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+      <h2 style="font-size: 1.5rem;">Activity & Statement</h2>
+      <a href="/api/v1/wallet/statement.csv" class="btn btn-outline" style="height: 38px; padding: 0 16px; font-size: 0.85rem;">
+        📥 Download Statement (CSV)
+      </a>
+    </div>
+
+    <!-- Filter Bar -->
+    <form method="GET" action="/app/activity" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) 100px; gap: 10px; margin-bottom: 24px;">
+      <div>
+        <select name="type" class="form-control" style="height: 40px; font-size: 0.85rem;">
+          <option value="">All Types</option>
+          <option value="top_up" {{if eq .FilterType "top_up"}}selected{{end}}>Top Up</option>
+          <option value="transfer_in" {{if eq .FilterType "transfer_in"}}selected{{end}}>Received</option>
+          <option value="transfer_out" {{if eq .FilterType "transfer_out"}}selected{{end}}>Sent</option>
+          <option value="withdrawal" {{if eq .FilterType "withdrawal"}}selected{{end}}>Withdrawal</option>
+          <option value="fee" {{if eq .FilterType "fee"}}selected{{end}}>Fee</option>
+        </select>
+      </div>
+
+      <div>
+        <input type="date" name="from" value="{{.FilterFrom}}" class="form-control" style="height: 40px; font-size: 0.85rem;">
+      </div>
+
+      <div>
+        <input type="date" name="to" value="{{.FilterTo}}" class="form-control" style="height: 40px; font-size: 0.85rem;">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="height: 40px; font-size: 0.85rem;">Filter</button>
+    </form>
+
+    <!-- Transactions Grouped List -->
+    {{if .Transactions}}
+      <div style="display: flex; flex-direction: column;">
+        {{range .Transactions}}
+          <div class="txn-row">
+            <div class="txn-info">
+              <div class="txn-icon">
+                {{if eq .Type "top_up"}}➕
+                {{else if eq .Type "transfer_in"}}📥
+                {{else if eq .Type "transfer_out"}}📤
+                {{else if eq .Type "withdrawal"}}🏦
+                {{else if eq .Type "fee"}}🏷️
+                {{else}}💰{{end}}
+              </div>
+              <div>
+                <div class="txn-title">{{.Note}}</div>
+                <div class="txn-sub">
+                  {{if .CounterpartyName}}
+                    {{.CounterpartyName}} ({{.CounterpartyHandle}}) •
+                  {{end}}
+                  {{.CreatedAt.Format "02 Jan 2006, 15:04"}}
+                </div>
+                <div class="txn-sub" style="font-family: var(--font-mono); font-size: 0.75rem;">Ref: {{.ReferenceID}}</div>
+              </div>
+            </div>
+
+            <div style="text-align: right;">
+              <div class="txn-amt {{if gt .AmountPaise 0}}in{{else}}out{{end}}">
+                {{if gt .AmountPaise 0}}+{{end}}{{.FormattedAmount}}
+              </div>
+              <div style="font-size: 0.75rem; color: var(--muted); margin-top: 4px;">
+                Bal: {{.FormattedBalanceAfter}}
+              </div>
+            </div>
+          </div>
+        {{end}}
+      </div>
+    {{else}}
+      <div style="text-align: center; padding: 40px 0; color: var(--muted);">
+        <p>No transactions match your criteria.</p>
+      </div>
+    {{end}}
+  </div>
+</div>
+{{end}}

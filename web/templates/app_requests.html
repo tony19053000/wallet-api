@@ -1,0 +1,109 @@
+{{define "content"}}
+<div style="display: flex; flex-direction: column; gap: 20px;">
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="font-size: 1.5rem;">Money Requests</h2>
+      <a href="/app/request" class="btn btn-primary" style="height: 38px; padding: 0 16px; font-size: 0.85rem;">+ New Request</a>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+      <a href="/app/requests?direction=incoming" class="btn {{if eq .Direction "incoming"}}btn-primary{{else}}btn-outline{{end}}" style="height: 36px; padding: 0 16px; font-size: 0.85rem;">Incoming</a>
+      <a href="/app/requests?direction=outgoing" class="btn {{if eq .Direction "outgoing"}}btn-primary{{else}}btn-outline{{end}}" style="height: 36px; padding: 0 16px; font-size: 0.85rem;">Outgoing</a>
+    </div>
+
+    {{if .Requests}}
+      <div style="display: flex; flex-direction: column;">
+        {{range .Requests}}
+          <div class="txn-row" style="align-items: flex-start; padding: 16px 0;">
+            <div class="txn-info" style="flex: 1;">
+              <div class="txn-icon">📩</div>
+              <div>
+                <div class="txn-title">{{.Note}}</div>
+                <div class="txn-sub">
+                  {{if eq $.Direction "incoming"}}
+                    Requested by <strong>{{.FromUserName}} ({{.FromUserHandle}})</strong>
+                  {{else}}
+                    Sent to <strong>{{.ToUserName}} ({{.ToUserHandle}})</strong>
+                  {{end}}
+                </div>
+                <div class="txn-sub">{{.CreatedAt.Format "02 Jan 2006, 15:04"}}</div>
+              </div>
+            </div>
+
+            <div style="text-align: right;">
+              <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 6px;">{{.FormattedAmount}}</div>
+              <span class="badge {{if eq .Status "paid"}}badge-success{{else if eq .Status "pending"}}badge-warning{{else}}badge-danger{{end}}">
+                {{.Status}}
+              </span>
+
+              {{if eq .Status "pending"}}
+                <div style="display: flex; gap: 8px; margin-top: 10px; justify-content: flex-end;">
+                  {{if eq $.Direction "incoming"}}
+                    <button class="btn btn-primary" style="height: 32px; padding: 0 12px; font-size: 0.8rem;" onclick="payRequest('{{.ID}}')">Pay</button>
+                    <button class="btn btn-outline" style="height: 32px; padding: 0 12px; font-size: 0.8rem;" onclick="declineRequest('{{.ID}}')">Decline</button>
+                  {{else}}
+                    <button class="btn btn-danger" style="height: 32px; padding: 0 12px; font-size: 0.8rem;" onclick="cancelRequest('{{.ID}}')">Cancel</button>
+                  {{end}}
+                </div>
+              {{end}}
+            </div>
+          </div>
+        {{end}}
+      </div>
+    {{else}}
+      <div style="text-align: center; padding: 40px 0; color: var(--muted);">
+        <p>No {{.Direction}} money requests found.</p>
+      </div>
+    {{end}}
+  </div>
+</div>
+
+<script>
+  async function payRequest(id) {
+    if (!confirm('Pay this money request now?')) return;
+    try {
+      const res = await fetch(`/api/v1/requests/${id}/pay`, { method: 'POST' });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Request paid successfully!');
+        window.location.reload();
+      } else {
+        showToast(data.error?.message || 'Payment failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+
+  async function declineRequest(id) {
+    try {
+      const res = await fetch(`/api/v1/requests/${id}/decline`, { method: 'POST' });
+      if (res.ok) {
+        showToast('Request declined');
+        window.location.reload();
+      } else {
+        const data = await res.json();
+        showToast(data.error?.message || 'Action failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+
+  async function cancelRequest(id) {
+    try {
+      const res = await fetch(`/api/v1/requests/${id}/cancel`, { method: 'POST' });
+      if (res.ok) {
+        showToast('Request cancelled');
+        window.location.reload();
+      } else {
+        const data = await res.json();
+        showToast(data.error?.message || 'Action failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+</script>
+{{end}}

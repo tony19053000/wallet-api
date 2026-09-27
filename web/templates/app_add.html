@@ -1,0 +1,72 @@
+{{define "content"}}
+<div style="max-width: 500px; margin: 0 auto;">
+  <div class="card">
+    <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Top Up Wallet</h2>
+    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 24px;">Add funds instantly from your UPI, Debit Card, or Netbanking account.</p>
+
+    <form onsubmit="event.preventDefault(); submitTopUp(this);">
+      <div class="form-group">
+        <label class="form-label">Enter Amount (₹)</label>
+        <input type="number" id="topup-amount" name="amount" class="form-control" placeholder="1000" min="1" max="50000" step="any" required>
+      </div>
+
+      <!-- Quick Amount Chips -->
+      <div style="display: flex; gap: 10px; margin-bottom: 24px;">
+        <button type="button" class="btn btn-outline" style="height: 36px; padding: 0 16px; font-size: 0.85rem;" onclick="setAmount(500)">+ ₹500</button>
+        <button type="button" class="btn btn-outline" style="height: 36px; padding: 0 16px; font-size: 0.85rem;" onclick="setAmount(1000)">+ ₹1,000</button>
+        <button type="button" class="btn btn-outline" style="height: 36px; padding: 0 16px; font-size: 0.85rem;" onclick="setAmount(2000)">+ ₹2,000</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Select Payment Method</label>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+          <label style="border: 1.5px solid var(--line); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer;">
+            <input type="radio" name="source" value="upi" checked style="margin-bottom: 4px;">
+            <div style="font-weight: 600; font-size: 0.85rem;">UPI</div>
+          </label>
+          <label style="border: 1.5px solid var(--line); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer;">
+            <input type="radio" name="source" value="card" style="margin-bottom: 4px;">
+            <div style="font-weight: 600; font-size: 0.85rem;">Card</div>
+          </label>
+          <label style="border: 1.5px solid var(--line); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer;">
+            <input type="radio" name="source" value="netbanking" style="margin-bottom: 4px;">
+            <div style="font-weight: 600; font-size: 0.85rem;">Netbanking</div>
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Confirm Top-Up</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function setAmount(val) {
+    document.getElementById('topup-amount').value = val;
+  }
+
+  async function submitTopUp(form) {
+    const rupees = parseFloat(form.amount.value);
+    const source = form.source.value;
+    if (isNaN(rupees) || rupees <= 0) return;
+
+    const amountPaise = Math.round(rupees * 100);
+    try {
+      const res = await fetch('/api/v1/wallet/top-up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount_paise: amountPaise, source })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Top-up successful!');
+        window.location.href = '/app';
+      } else {
+        showToast(data.error?.message || 'Top-up failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+</script>
+{{end}}

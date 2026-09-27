@@ -1,0 +1,45 @@
+{{define "content"}}
+<div class="card">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2 style="font-size: 1.5rem;">Transfers Log</h2>
+    <div style="display: flex; gap: 10px;">
+      <a href="/admin/transfers" class="btn {{if eq .StatusFilter ""}}btn-primary{{else}}btn-outline{{end}}" style="height: 36px; padding: 0 14px; font-size: 0.85rem;">All</a>
+      <a href="/admin/transfers?status=completed" class="btn {{if eq .StatusFilter "completed"}}btn-primary{{else}}btn-outline{{end}}" style="height: 36px; padding: 0 14px; font-size: 0.85rem;">Completed</a>
+      <a href="/admin/transfers?status=failed" class="btn {{if eq .StatusFilter "failed"}}btn-danger{{else}}btn-outline{{end}}" style="height: 36px; padding: 0 14px; font-size: 0.85rem;">Failed</a>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Transfer ID</th>
+        <th>From User</th>
+        <th>To User</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Failure Reason</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .Transfers}}
+        <tr {{if eq .Status "failed"}}style="background: var(--danger-tint);"{{end}}>
+          <td style="font-family: var(--font-mono); font-size: 0.8rem;">{{.ID}}</td>
+          <td>{{.FromUserName}} ({{.FromUserHandle}})</td>
+          <td>{{.ToUserName}} ({{.ToUserHandle}})</td>
+          <td><strong>{{.FormattedAmount}}</strong></td>
+          <td>
+            <span class="badge {{if eq .Status "completed"}}badge-success{{else}}badge-danger{{end}}">
+              {{.Status}}
+            </span>
+          </td>
+          <td style="font-size: 0.85rem; color: var(--muted);">
+            {{if .FailureReason}}{{.FailureReason}}{{else}}—{{end}}
+          </td>
+          <td style="font-size: 0.85rem; color: var(--muted);">{{.CreatedAt.Format "02 Jan 2006, 15:04"}}</td>
+        </tr>
+      {{end}}
+    </tbody>
+  </table>
+</div>
+{{end}}

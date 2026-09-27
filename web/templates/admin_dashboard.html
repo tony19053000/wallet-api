@@ -1,0 +1,52 @@
+{{define "content"}}
+<div style="display: flex; flex-direction: column; gap: 24px;">
+  <h1 style="font-size: 1.8rem;">Risk & Operations Overview</h1>
+
+  <!-- Metrics Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+    <div class="card">
+      <div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 4px;">Total Balances Held</div>
+      <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary);">{{.FormattedTotalBalances}}</div>
+    </div>
+    <div class="card">
+      <div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 4px;">Today's Volume</div>
+      <div style="font-size: 1.8rem; font-weight: 700; color: var(--secondary);">{{.FormattedTodayVolume}}</div>
+    </div>
+    <div class="card">
+      <div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 4px;">Total Transfers Count</div>
+      <div style="font-size: 1.8rem; font-weight: 700;">{{.Metrics.TotalTransfersCount}}</div>
+    </div>
+    <div class="card">
+      <div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 4px;">Failed Transfer Rate</div>
+      <div style="font-size: 1.8rem; font-weight: 700; color: {{if gt .Metrics.FailedTransferRate 0.05}}var(--danger){{else}}var(--ink){{end}};">
+        {{printf "%.2f%%" (mul .Metrics.FailedTransferRate 100.0)}}
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Senders Table -->
+  <div class="card">
+    <h3 style="font-size: 1.2rem; margin-bottom: 16px;">Top Sender Accounts</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Handle</th>
+          <th>Total Transferred</th>
+          <th>Completed Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{range .Metrics.TopSenders}}
+          <tr>
+            <td><strong>{{.UserName}}</strong></td>
+            <td>{{.UserHandle}}</td>
+            <td>{{.FormattedTotal}}</td>
+            <td>{{.Count}}</td>
+          </tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+</div>
+{{end}}

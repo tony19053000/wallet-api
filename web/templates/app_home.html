@@ -1,0 +1,105 @@
+{{define "content"}}
+<div style="display: flex; flex-direction: column; gap: 20px;">
+  <!-- Hero Balance Card -->
+  <div class="hero-card">
+    <div class="hero-balance-label">
+      <span>Pocketa Wallet Balance</span>
+      <button class="eye-btn" onclick="toggleBalance()" id="eye-icon" title="Toggle balance visibility">👁️</button>
+    </div>
+    <div class="hero-balance-val" id="balance-display" data-hidden="false" data-real="{{.FormattedBalance}}">
+      {{.FormattedBalance}}
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; opacity: 0.9;">
+      <div>Handle: <strong>{{.User.Handle}}</strong></div>
+      <div>KYC Status: <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 12px; font-weight: 600;">{{if eq .User.KYCLevel "full"}}Verified ✓{{else}}Basic{{end}}</span></div>
+    </div>
+  </div>
+
+  <!-- Quick Actions Grid -->
+  <div class="quick-actions">
+    <a href="/app/add" class="action-btn">
+      <div class="action-icon">➕</div>
+      <span>Add Money</span>
+    </a>
+    <a href="/app/send" class="action-btn">
+      <div class="action-icon">💸</div>
+      <span>Send</span>
+    </a>
+    <a href="/app/request" class="action-btn">
+      <div class="action-icon">🤲</div>
+      <span>Request / Split</span>
+    </a>
+    <a href="/app/withdraw" class="action-btn">
+      <div class="action-icon">🏦</div>
+      <span>Withdraw</span>
+    </a>
+  </div>
+
+  <!-- Recent Activity Overview -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3 style="font-size: 1.1rem;">Recent Activity</h3>
+      <a href="/app/activity" style="font-size: 0.875rem; font-weight: 600;">View All</a>
+    </div>
+
+    {{if .RecentTransactions}}
+      <div style="display: flex; flex-direction: column;">
+        {{range .RecentTransactions}}
+          <div class="txn-row">
+            <div class="txn-info">
+              <div class="txn-icon">
+                {{if eq .Type "top_up"}}➕
+                {{else if eq .Type "transfer_in"}}📥
+                {{else if eq .Type "transfer_out"}}📤
+                {{else if eq .Type "withdrawal"}}🏦
+                {{else if eq .Type "fee"}}🏷️
+                {{else}}💰{{end}}
+              </div>
+              <div>
+                <div class="txn-title">{{.Note}}</div>
+                <div class="txn-sub">{{.CreatedAt.Format "02 Jan 2006, 15:04"}}</div>
+              </div>
+            </div>
+            <div class="txn-amt {{if gt .AmountPaise 0}}in{{else}}out{{end}}">
+              {{if gt .AmountPaise 0}}+{{end}}{{.FormattedAmount}}
+            </div>
+          </div>
+        {{end}}
+      </div>
+    {{else}}
+      <div style="text-align: center; padding: 30px 0; color: var(--muted);">
+        <p>No recent transactions yet.</p>
+        <a href="/app/add" class="btn btn-primary" style="margin-top: 12px; height: 38px; padding: 0 16px; font-size: 0.85rem;">Top Up Wallet</a>
+      </div>
+    {{end}}
+  </div>
+
+  <!-- Monthly Spend Donut SVG -->
+  <div class="card">
+    <h3 style="font-size: 1.1rem; margin-bottom: 16px;">Monthly Spend Breakdown</h3>
+    <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+      <svg width="120" height="120" viewBox="0 0 42 42" class="donut">
+        <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="var(--surface)"></circle>
+        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--bg)" stroke-width="5"></circle>
+        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--primary)" stroke-width="5" stroke-dasharray="60 40" stroke-dashoffset="25"></circle>
+        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--secondary)" stroke-width="5" stroke-dasharray="25 75" stroke-dashoffset="65"></circle>
+        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="var(--warning)" stroke-width="5" stroke-dasharray="15 85" stroke-dashoffset="40"></circle>
+      </svg>
+      <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 12px; height: 12px; border-radius: 50%; background: var(--primary);"></span>
+          <span>Transfers & Splits (60%)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 12px; height: 12px; border-radius: 50%; background: var(--secondary);"></span>
+          <span>Bank Withdrawals (25%)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 12px; height: 12px; border-radius: 50%; background: var(--warning);"></span>
+          <span>Fees & Others (15%)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}

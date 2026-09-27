@@ -1,0 +1,83 @@
+{{define "content"}}
+<div style="max-width: 500px; margin: 0 auto;">
+  <div class="card">
+    <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Withdraw to Bank Account</h2>
+    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 24px;">Transfer funds from your Pocketa wallet directly to your Indian bank account.</p>
+
+    {{if .BankAccounts}}
+      <form onsubmit="event.preventDefault(); submitWithdrawal(this);">
+        <div class="form-group">
+          <label class="form-label">Select Bank Account</label>
+          <select name="bank_account_id" class="form-control" required>
+            {{range .BankAccounts}}
+              <option value="{{.ID}}">{{.BankName}} •••• {{.AccountLast4}} ({{.AccountHolder}})</option>
+            {{end}}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Withdrawal Amount (₹)</label>
+          <input type="number" id="wdr-amount" name="amount" class="form-control" placeholder="500" min="1" step="any" oninput="updateWdrBreakdown(this.value)" required>
+        </div>
+
+        <!-- Fee breakdown banner -->
+        <div id="wdr-banner" style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px; font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span>Requested Amount:</span>
+            <span id="banner-req-amt" style="font-weight: 600;">₹0.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--muted);">
+            <span>Withdrawal Fee (Flat):</span>
+            <span>₹2.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 8px; font-weight: 700;">
+            <span>You'll receive in bank:</span>
+            <span id="banner-payout-amt" style="color: var(--primary);">₹0.00</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Confirm Withdrawal</button>
+      </form>
+    {{else}}
+      <div style="text-align: center; padding: 30px 0;">
+        <p style="color: var(--muted); margin-bottom: 16px;">You haven't added a bank account yet.</p>
+        <a href="/app/banks" class="btn btn-primary">Add Bank Account Now</a>
+      </div>
+    {{end}}
+  </div>
+</div>
+
+<script>
+  function updateWdrBreakdown(val) {
+    const amt = parseFloat(val) || 0;
+    const reqEl = document.getElementById('banner-req-amt');
+    const payEl = document.getElementById('banner-payout-amt');
+    if (reqEl) reqEl.innerText = '₹' + amt.toFixed(2);
+    if (payEl) payEl.innerText = '₹' + Math.max(0, amt).toFixed(2);
+  }
+
+  async function submitWithdrawal(form) {
+    const bankAccountID = form.bank_account_id.value;
+    const rupees = parseFloat(form.amount.value);
+    if (!bankAccountID || isNaN(rupees) || rupees <= 0) return;
+
+    const amountPaise = Math.round(rupees * 100);
+    try {
+      const res = await fetch('/api/v1/withdrawals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bank_account_id: bankAccountID, amount_paise: amountPaise })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Withdrawal completed!');
+        window.location.href = '/app';
+      } else {
+        showToast(data.error?.message || 'Withdrawal failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+</script>
+{{end}}

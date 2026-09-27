@@ -1,0 +1,109 @@
+{{define "content"}}
+<div style="max-width: 500px; margin: 0 auto;">
+  <div class="card">
+    <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Send Money</h2>
+    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 24px;">Send instant peer-to-peer funds to any Pocketa @handle.</p>
+
+    <form onsubmit="event.preventDefault(); submitSend(this);">
+      <div class="form-group">
+        <label class="form-label">Recipient Handle</label>
+        <input type="text" name="to_handle" class="form-control" placeholder="@riya.s" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Amount (₹)</label>
+        <div class="keypad-display" id="keypad-val">₹0.00</div>
+        <input type="hidden" id="send-amount-rupees" name="amount_rupees" value="0">
+      </div>
+
+      <!-- Quick Keypad -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+        <button type="button" class="btn btn-outline" onclick="appendNum('1')">1</button>
+        <button type="button" class="btn btn-outline" onclick="appendNum('2')">2</button>
+        <button type="button" class="btn btn-outline" onclick="appendNum('3')">3</button>
+        <button type="button" class="btn btn-outline" onclick="appendNum('4')">4</button>
+        <button type="button" class="btn btn-outline" onclick="appendNum('5')">5</button>
+        <button type="button" class="btn btn-outline" onclick="appendNum('6')">6</button>
+        <button type="button" class="btn btn-outline" onclick="appendNum('7')">7</button>
+        <button type="button" class="btn btn-outline" onclick="appendNum('8')">8</button>
+        <button type="button" class="btn btn-outline" onclick="appendNum('9')">9</button>
+        <button type="button" class="btn btn-outline" onclick="clearNum()">C</button>
+        <button type="button" class="btn btn-outline" onclick="appendNum('0')">0</button>
+        <button type="button" class="btn btn-outline" onclick="backspaceNum()">⌫</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Note (optional)</label>
+        <input type="text" id="send-note" name="note" class="form-control" placeholder="Chai ☕ or Rent share">
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <span style="cursor: pointer; background: var(--bg); padding: 4px 10px; border-radius: 12px; font-size: 0.85rem;" onclick="addEmoji('Goa trip 🏖️ fuel')">Goa trip 🏖️</span>
+          <span style="cursor: pointer; background: var(--bg); padding: 4px 10px; border-radius: 12px; font-size: 0.85rem;" onclick="addEmoji('Chai ☕')">Chai ☕</span>
+          <span style="cursor: pointer; background: var(--bg); padding: 4px 10px; border-radius: 12px; font-size: 0.85rem;" onclick="addEmoji('Swiggy dinner 🍕')">Dinner 🍕</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Confirm & Send</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  let currentVal = '0';
+
+  function updateKeypad() {
+    const rupees = parseFloat(currentVal) || 0;
+    document.getElementById('keypad-val').innerText = '₹' + rupees.toLocaleString('en-IN');
+    document.getElementById('send-amount-rupees').value = rupees;
+  }
+
+  function appendNum(n) {
+    if (currentVal === '0') currentVal = n;
+    else if (currentVal.length < 7) currentVal += n;
+    updateKeypad();
+  }
+
+  function clearNum() {
+    currentVal = '0';
+    updateKeypad();
+  }
+
+  function backspaceNum() {
+    if (currentVal.length <= 1) currentVal = '0';
+    else currentVal = currentVal.substring(0, currentVal.length - 1);
+    updateKeypad();
+  }
+
+  function addEmoji(txt) {
+    document.getElementById('send-note').value = txt;
+  }
+
+  async function submitSend(form) {
+    const handle = form.to_handle.value;
+    const rupees = parseFloat(form.amount_rupees.value);
+    const note = form.note.value;
+
+    if (!handle || isNaN(rupees) || rupees <= 0) {
+      showToast('Please enter a valid handle and amount', 'error');
+      return;
+    }
+
+    const amountPaise = Math.round(rupees * 100);
+    try {
+      const res = await fetch('/api/v1/transfers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to_handle: handle, amount_paise: amountPaise, note })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Transfer completed!');
+        window.location.href = `/app/transfers/${data.id}`;
+      } else {
+        showToast(data.error?.message || 'Transfer failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+</script>
+{{end}}

@@ -1,0 +1,33 @@
+{{define "content"}}
+<div style="max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px;">
+  <div class="card" style="text-align: center; padding: 32px;">
+    <h2 style="font-size: 1.6rem; margin-bottom: 8px;">Ledger Reconciliation Check</h2>
+    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 24px;">Verifies double-entry ledger equality: Sum of All Wallet Balances vs Sum of All Transaction Delta Entries.</p>
+
+    {{if .Check.Matches}}
+      <div style="background: var(--primary-tint); border: 1.5px solid var(--primary); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px;">
+        <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 8px;">✓</div>
+        <h3 style="font-size: 1.4rem; color: var(--primary); font-weight: 700;">Ledger Perfectly Balanced</h3>
+        <p style="color: var(--ink); font-size: 0.95rem; margin-top: 4px;">Sum of wallet balances matches sum of ledger transactions exact to 0 paise difference.</p>
+      </div>
+    {{else}}
+      <div style="background: var(--danger-tint); border: 1.5px solid var(--danger); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px;">
+        <div style="font-size: 2.5rem; color: var(--danger); margin-bottom: 8px;">⚠️</div>
+        <h3 style="font-size: 1.4rem; color: var(--danger); font-weight: 700;">Ledger Mismatch Detected</h3>
+        <p style="color: var(--danger); font-size: 0.95rem; margin-top: 4px;">Warning: Sum of wallet balances does NOT equal the sum of transaction ledger entries!</p>
+      </div>
+    {{end}}
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: left;">
+      <div style="background: var(--bg); padding: 16px; border-radius: var(--radius-md);">
+        <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 4px;">Sum of Wallet Balances</div>
+        <div style="font-size: 1.3rem; font-weight: 700; font-family: var(--font-mono);">{{.FormattedBalances}}</div>
+      </div>
+      <div style="background: var(--bg); padding: 16px; border-radius: var(--radius-md);">
+        <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 4px;">Sum of Ledger Transactions</div>
+        <div style="font-size: 1.3rem; font-weight: 700; font-family: var(--font-mono);">{{.FormattedLedger}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}

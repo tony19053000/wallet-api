@@ -1,0 +1,132 @@
+{{define "content"}}
+<div style="display: flex; flex-direction: column; gap: 20px;">
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="font-size: 1.5rem;">Linked Bank Accounts</h2>
+      <button class="btn btn-primary" style="height: 38px; padding: 0 16px; font-size: 0.85rem;" onclick="toggleAddBankModal(true)">
+        + Add Bank Account
+      </button>
+    </div>
+
+    {{if .BankAccounts}}
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        {{range .BankAccounts}}
+          <div style="background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 20px; position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+              <div>
+                <h3 style="font-size: 1.1rem; font-weight: 700;">{{.BankName}}</h3>
+                <div style="font-size: 0.85rem; color: var(--muted);">IFSC: {{.IFSC}}</div>
+              </div>
+              {{if .IsPrimary}}
+                <span class="badge badge-success">Primary</span>
+              {{end}}
+            </div>
+
+            <div style="font-size: 1.25rem; font-family: var(--font-mono); font-weight: 600; margin-bottom: 12px; letter-spacing: 1px;">
+              •••• •••• {{.AccountLast4}}
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--muted);">
+              <span>Holder: {{.AccountHolder}}</span>
+              <button onclick="deleteBankAccount('{{.ID}}')" style="color: var(--danger); font-weight: 600;">Remove</button>
+            </div>
+          </div>
+        {{end}}
+      </div>
+    {{else}}
+      <div style="text-align: center; padding: 40px 0; color: var(--muted);">
+        <p>No bank accounts linked yet.</p>
+      </div>
+    {{end}}
+  </div>
+</div>
+
+<!-- Modal Dialog for Adding Bank Account -->
+<div id="add-bank-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+  <div class="card" style="width: 100%; max-width: 440px; margin: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3 style="font-size: 1.25rem;">Link Bank Account</h3>
+      <button onclick="toggleAddBankModal(false)" style="font-size: 1.2rem; cursor: pointer;">✕</button>
+    </div>
+
+    <form onsubmit="event.preventDefault(); submitAddBank(this);">
+      <div class="form-group">
+        <label class="form-label">Bank Name</label>
+        <select name="bank_name" class="form-control" required>
+          <option value="HDFC Bank">HDFC Bank</option>
+          <option value="ICICI Bank">ICICI Bank</option>
+          <option value="State Bank of India">State Bank of India</option>
+          <option value="Axis Bank">Axis Bank</option>
+          <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+          <option value="Punjab National Bank">Punjab National Bank</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Account Holder Name</label>
+        <input type="text" name="account_holder" class="form-control" placeholder="Riya Sharma" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Account Number</label>
+        <input type="text" name="account_number" class="form-control" placeholder="501004821948" required minlength="4">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">IFSC Code</label>
+        <input type="text" name="ifsc" class="form-control" placeholder="HDFC0000240" required style="text-transform: uppercase;">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Link Account</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function toggleAddBankModal(show) {
+    document.getElementById('add-bank-modal').style.display = show ? 'flex' : 'none';
+  }
+
+  async function submitAddBank(form) {
+    const payload = {
+      bank_name: form.bank_name.value,
+      account_holder: form.account_holder.value,
+      account_number: form.account_number.value,
+      ifsc: form.ifsc.value
+    };
+
+    try {
+      const res = await fetch('/api/v1/bank-accounts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Bank account linked successfully!');
+        window.location.reload();
+      } else {
+        showToast(data.error?.message || 'Failed to add bank account', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+
+  async function deleteBankAccount(id) {
+    if (!confirm('Remove this bank account?')) return;
+    try {
+      const res = await fetch(`/api/v1/bank-accounts/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        showToast('Bank account removed');
+        window.location.reload();
+      } else {
+        const data = await res.json();
+        showToast(data.error?.message || 'Delete failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+</script>
+{{end}}

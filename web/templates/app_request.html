@@ -1,0 +1,144 @@
+{{define "content"}}
+<div style="max-width: 500px; margin: 0 auto;">
+  <div class="card">
+    <div style="display: flex; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 20px;">
+      <button class="btn btn-primary" id="tab-request-btn" style="flex: 1; height: 38px; font-size: 0.9rem;" onclick="switchMode('request')">Single Request</button>
+      <button class="btn btn-outline" id="tab-split-btn" style="flex: 1; height: 38px; font-size: 0.9rem;" onclick="switchMode('split')">Split Bill</button>
+    </div>
+
+    <!-- Single Request Mode -->
+    <div id="mode-request">
+      <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Request Money</h2>
+      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 20px;">Send a payment request to a friend's @handle.</p>
+
+      <form onsubmit="event.preventDefault(); submitSingleRequest(this);">
+        <div class="form-group">
+          <label class="form-label">Request From (@handle)</label>
+          <input type="text" name="to_handle" class="form-control" placeholder="@arjun.m" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount (₹)</label>
+          <input type="number" name="amount_rupees" class="form-control" placeholder="500" min="1" step="any" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Note</label>
+          <input type="text" name="note" class="form-control" placeholder="Swiggy dinner share 🍕" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Send Request</button>
+      </form>
+    </div>
+
+    <!-- Split Bill Mode -->
+    <div id="mode-split" style="display: none;">
+      <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Split a Bill</h2>
+      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 20px;">Divide a total bill among several friends automatically.</p>
+
+      <form onsubmit="event.preventDefault(); submitSplitBill(this);">
+        <div class="form-group">
+          <label class="form-label">Total Bill Amount (₹)</label>
+          <input type="number" id="split-total" name="total_rupees" class="form-control" placeholder="1200" min="1" step="any" oninput="calculateSplitShare()" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Participant Handles (comma-separated)</label>
+          <input type="text" id="split-handles" name="handles_str" class="form-control" placeholder="@riya.s, @arjun.m, @ananya.r" oninput="calculateSplitShare()" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Note / Title</label>
+          <input type="text" name="note" class="form-control" placeholder="Goa trip dinner 🏖️" required>
+        </div>
+
+        <div style="background: var(--primary-tint); color: var(--primary); padding: 14px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.9rem; margin-bottom: 20px;" id="split-preview">
+          Enter total amount and handles to calculate per-person share.
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Send Split Requests</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchMode(mode) {
+    const reqDiv = document.getElementById('mode-request');
+    const splitDiv = document.getElementById('mode-split');
+    const reqBtn = document.getElementById('tab-request-btn');
+    const splitBtn = document.getElementById('tab-split-btn');
+
+    if (mode === 'request') {
+      reqDiv.style.display = 'block';
+      splitDiv.style.display = 'none';
+      reqBtn.className = 'btn btn-primary';
+      splitBtn.className = 'btn btn-outline';
+    } else {
+      reqDiv.style.display = 'none';
+      splitDiv.style.display = 'block';
+      reqBtn.className = 'btn btn-outline';
+      splitBtn.className = 'btn btn-primary';
+    }
+  }
+
+  function calculateSplitShare() {
+    const total = parseFloat(document.getElementById('split-total').value) || 0;
+    const handlesStr = document.getElementById('split-handles').value;
+    const handles = handlesStr.split(',').map(h => h.trim()).filter(h => h.length > 0);
+
+    const prevEl = document.getElementById('split-preview');
+    if (total <= 0 || handles.length === 0) {
+      prevEl.innerText = 'Enter total amount and handles to calculate per-person share.';
+      return;
+    }
+
+    const share = (total / handles.length).toFixed(2);
+    prevEl.innerText = `💡 Each of the ${handles.length} friends will pay ₹${share}`;
+  }
+
+  async function submitSingleRequest(form) {
+    const handle = form.to_handle.value;
+    const rupees = parseFloat(form.amount_rupees.value);
+    const note = form.note.value;
+
+    const amountPaise = Math.round(rupees * 100);
+    try {
+      const res = await fetch('/api/v1/requests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to_handle: handle, amount_paise: amountPaise, note })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Request sent successfully!');
+        window.location.href = '/app/requests';
+      } else {
+        showToast(data.error?.message || 'Request failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+
+  async function submitSplitBill(form) {
+    const totalRupees = parseFloat(form.total_rupees.value);
+    const handlesStr = form.handles_str.value;
+    const note = form.note.value;
+    const handles = handlesStr.split(',').map(h => h.trim()).filter(h => h.length > 0);
+
+    const totalPaise = Math.round(totalRupees * 100);
+    try {
+      const res = await fetch('/api/v1/split', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ handles, total_paise: totalPaise, note })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(`Created ${data.count} split requests!`);
+        window.location.href = '/app/requests';
+      } else {
+        showToast(data.error?.message || 'Split failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+</script>
+{{end}}
