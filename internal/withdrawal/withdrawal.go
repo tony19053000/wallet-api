@@ -63,7 +63,7 @@ func (s *Service) Withdraw(userID string, req CreateWithdrawalRequest) (*Withdra
 	var w auth.Wallet
 	err = tx.QueryRow(`
 		SELECT id, user_id, balance_paise, status, daily_send_limit_paise, created_at
-		FROM wallets WHERE user_id = ? FOR UPDATE
+		FROM wallets WHERE user_id = ?
 	`, userID).Scan(&w.ID, &w.UserID, &w.BalancePaise, &w.Status, &w.DailySendLimitPaise, &w.CreatedAt)
 	if err != nil {
 		return nil, &httpx.CustomError{Code: "wallet_not_found", Message: "Wallet not found", Status: http.StatusNotFound}

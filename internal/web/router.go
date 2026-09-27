@@ -1,11 +1,8 @@
 package web
 
 import (
-	"database/sql"
-	"fmt"
 	"html/template"
 	"net/http"
-	"strconv"
 
 	"github.com/tony19053000/wallet-api/internal/admin"
 	"github.com/tony19053000/wallet-api/internal/auth"
