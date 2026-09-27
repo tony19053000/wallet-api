@@ -17,6 +17,24 @@ type ErrorDetail struct {
 	Message string `json:"message"`
 }
 
+type CustomError struct {
+	Code    string
+	Message string
+	Status  int
+}
+
+func (e *CustomError) Error() string {
+	return e.Message
+}
+
+func HandleError(w http.ResponseWriter, err error) {
+	if cerr, ok := err.(*CustomError); ok {
+		Error(w, cerr.Status, cerr.Code, cerr.Message)
+		return
+	}
+	InternalServerError(w, err.Error())
+}
+
 func JSON(w http.ResponseWriter, status int, data any) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(status)
