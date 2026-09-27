@@ -1,0 +1,20 @@
+{{define "content"}}
+<div style="padding: 40px 0; max-width: 800px; margin: 0 auto; line-height: 1.6;">
+  <h1 style="font-size: 2.2rem; margin-bottom: 12px;">Privacy Policy</h1>
+  <p style="color: var(--muted); margin-bottom: 32px;">Last updated: September 2026</p>
+
+  <div class="card" style="margin-bottom: 24px;">
+    <h3 style="font-size: 1.2rem; margin-bottom: 8px;">1. Information We Collect</h3>
+    <p style="color: var(--muted); font-size: 0.95rem;">
+      We collect personal information necessary to provide neobank wallet services, including your name, email address, phone number, custom @handle, bank account details for payouts, and transaction history.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size: 1.2rem; margin-bottom: 8px;">2. How We Protect Your Data</h3>
+    <p style="color: var(--muted); font-size: 0.95rem;">
+      Your data is stored securely in encrypted SQLite ledgers with WAL journal mode. Passwords are hashed using bcrypt. We never sell your personal data to third parties.
+    </p>
+  </div>
+</div>
+{{end}}

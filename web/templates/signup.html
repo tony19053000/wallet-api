@@ -1,0 +1,73 @@
+{{define "content"}}
+<div style="max-width: 440px; margin: 40px auto;">
+  <div class="card">
+    <h2 style="font-size: 1.6rem; text-align: center; margin-bottom: 8px;">Create your Pocketa Wallet</h2>
+    <p style="color: var(--muted); text-align: center; font-size: 0.9rem; margin-bottom: 24px;">Instant signup with your handle and mobile number.</p>
+
+    <form onsubmit="event.preventDefault(); submitSignup(this);">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="name" class="form-control" placeholder="Riya Sharma" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" name="email" class="form-control" placeholder="riya@pocketa.money" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" name="phone" class="form-control" placeholder="+91 98201 44521" required>
+      </div>
+
+      <div class="form-group">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <label class="form-label" style="margin-bottom: 0;">Choose Handle</label>
+          <span id="handle-status" style="font-size: 0.8rem; font-weight: 600;"></span>
+        </div>
+        <input type="text" name="handle" class="form-control" placeholder="@riya.s" oninput="checkHandleAvailability(this)" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="••••••••" required minlength="6">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">Create Account</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--muted);">
+      Already have an account? <a href="/login" style="font-weight: 600;">Log in</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function submitSignup(form) {
+    const payload = {
+      name: form.name.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      handle: form.handle.value,
+      password: form.password.value
+    };
+
+    try {
+      const res = await fetch('/api/v1/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Account created successfully!');
+        window.location.href = '/app';
+      } else {
+        showToast(data.error?.message || 'Signup failed', 'error');
+      }
+    } catch (e) {
+      showToast('Network error', 'error');
+    }
+  }
+</script>
+{{end}}

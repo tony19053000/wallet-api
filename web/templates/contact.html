@@ -1,0 +1,46 @@
+{{define "content"}}
+<div style="padding: 40px 0; max-width: 800px; margin: 0 auto;">
+  <h1 style="font-size: 2.2rem; margin-bottom: 12px;">Contact Support</h1>
+  <p style="color: var(--muted); margin-bottom: 32px;">We are here to assist you 24x7. Reach out via email or visit our headquarters.</p>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px;">
+    <div class="card">
+      <h3 style="font-size: 1.1rem; margin-bottom: 8px;">📧 Email Support</h3>
+      <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 12px;">General inquiries & account help:</p>
+      <a href="mailto:support@pocketa.money" style="font-weight: 600; font-size: 1rem;">support@pocketa.money</a>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size: 1.1rem; margin-bottom: 8px;">📍 Registered Head Office</h3>
+      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">
+        Pocketa Financial Technologies Pvt Ltd<br>
+        7th Floor, Koramangala Industrial Layout<br>
+        Bengaluru, Karnataka — 560095, India
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size: 1.25rem; margin-bottom: 16px;">Send Us a Message</h3>
+    <form onsubmit="event.preventDefault(); showToast('Message submitted. Our support team will reply within 2 hours!'); this.reset();">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-control" placeholder="Riya Sharma" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-control" placeholder="riya@pocketa.money" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <input type="text" class="form-control" placeholder="Query about bank withdrawal" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-control" style="height: 100px; padding-top: 12px;" placeholder="Describe your issue in detail..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+  </div>
+</div>
+{{end}}

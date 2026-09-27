@@ -1,0 +1,71 @@
+{{define "layout_public"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} — Pocketa | Instant Peer-to-Peer Payments</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <div class="public-container">
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon">P</div>
+        <span>Pocketa</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/fees">Fees</a>
+        <a href="/security">Security</a>
+        <a href="/careers">Careers</a>
+        <a href="/help">Help</a>
+        {{if .User}}
+          <a href="/app" class="btn btn-primary" style="height:38px; padding:0 16px;">Go to App</a>
+        {{else}}
+          <a href="/login">Log In</a>
+          <a href="/signup" class="btn btn-primary" style="height:38px; padding:0 16px;">Sign Up</a>
+        {{end}}
+      </nav>
+    </header>
+
+    <main>
+      {{template "content" .}}
+    </main>
+
+    <footer style="margin-top: 60px; padding: 40px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.875rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 30px;">
+        <div>
+          <div class="brand" style="font-size: 1.25rem; margin-bottom: 12px;">
+            <div class="brand-icon" style="width: 26px; height: 26px; font-size: 0.9rem;">P</div>
+            <span>Pocketa</span>
+          </div>
+          <p>Money that moves as fast as your friends. India's favorite peer-to-peer neobank wallet.</p>
+        </div>
+        <div>
+          <h4 style="color: var(--ink); margin-bottom: 12px;">Product</h4>
+          <p><a href="/fees">Fees & Limits</a></p>
+          <p><a href="/security">Security Architecture</a></p>
+          <p><a href="/help">Help Centre</a></p>
+        </div>
+        <div>
+          <h4 style="color: var(--ink); margin-bottom: 12px;">Company</h4>
+          <p><a href="/about">About Us</a></p>
+          <p><a href="/careers">Careers</a></p>
+          <p><a href="/contact">Contact Support</a></p>
+        </div>
+        <div>
+          <h4 style="color: var(--ink); margin-bottom: 12px;">Legal & Trust</h4>
+          <p><a href="/terms">Terms of Service</a></p>
+          <p><a href="/privacy">Privacy Policy</a></p>
+          <p><a href="/grievance">Grievance Redressal</a></p>
+        </div>
+      </div>
+      <div style="text-align: center; border-top: 1px solid var(--line); padding-top: 20px;">
+        <p>© 2026 Pocketa Financial Technologies Pvt Ltd. All rights reserved. Partnered with RBI-regulated banks.</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
+{{end}}

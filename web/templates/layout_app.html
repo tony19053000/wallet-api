@@ -1,0 +1,160 @@
+{{define "layout_app"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}} — Pocketa</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Desktop Left Rail Navigation -->
+    <aside class="desktop-rail card" style="display: flex; flex-direction: column; justify-content: space-between; height: calc(100vh - 40px); position: sticky; top: 20px;">
+      <div>
+        <a href="/app" class="brand" style="margin-bottom: 32px; display: flex;">
+          <div class="brand-icon">P</div>
+          <span>Pocketa</span>
+        </a>
+
+        <nav style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="/app" class="btn {{if eq .Page "home"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
+            <span>🏠</span> Home
+          </a>
+          <a href="/app/send" class="btn {{if eq .Page "send"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
+            <span>💸</span> Send
+          </a>
+          <a href="/app/request" class="btn {{if eq .Page "request"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
+            <span>🤲</span> Request & Split
+          </a>
+          <a href="/app/requests" class="btn {{if eq .Page "requests"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
+            <span>📩</span> Requests
+          </a>
+          <a href="/app/activity" class="btn {{if eq .Page "activity"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
+            <span>📊</span> Activity
+          </a>
+          <a href="/app/banks" class="btn {{if eq .Page "banks"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
+            <span>🏦</span> Bank Accounts
+          </a>
+          <a href="/app/profile" class="btn {{if eq .Page "profile"}}btn-primary{{else}}btn-outline{{end}}" style="justify-start: flex-start; gap: 12px; width: 100%;">
+            <span>👤</span> Profile
+          </a>
+          {{if eq .User.Role "admin"}}
+            <a href="/admin" class="btn btn-secondary" style="justify-start: flex-start; gap: 12px; width: 100%; margin-top: 12px;">
+              <span>🛡️</span> Risk Console
+            </a>
+          {{end}}
+        </nav>
+      </div>
+
+      <div>
+        <div style="padding: 12px; background: var(--bg); border-radius: var(--radius-md); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary-tint); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700;">
+            {{slice .User.Name 0 1}}
+          </div>
+          <div style="overflow: hidden;">
+            <div style="font-size: 0.875rem; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{.User.Name}}</div>
+            <div style="font-size: 0.75rem; color: var(--muted);">{{.User.Handle}}</div>
+          </div>
+        </div>
+        <button onclick="handleLogout()" class="btn btn-outline" style="width: 100%; gap: 8px;">
+          <span>🚪</span> Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Body -->
+    <main style="min-width: 0;">
+      {{template "content" .}}
+    </main>
+
+    <!-- Desktop Right Quick Panel -->
+    <aside class="desktop-side">
+      <div class="card" style="margin-bottom: 20px;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 16px;">Quick Send</h3>
+        <form action="/api/v1/transfers" method="POST" onsubmit="event.preventDefault(); submitQuickSend(this);">
+          <div class="form-group">
+            <label class="form-label">Recipient Handle</label>
+            <input type="text" name="to_handle" class="form-control" placeholder="@riya.s" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Amount (₹)</label>
+            <input type="number" name="amount_rupees" class="form-control" placeholder="500" min="1" step="any" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Note</label>
+            <input type="text" name="note" class="form-control" placeholder="Chai ☕">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Send Money</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size: 1rem; margin-bottom: 12px;">Pocketa Security</h3>
+        <div style="font-size: 0.85rem; color: var(--muted); line-height: 1.5;">
+          <p style="margin-bottom: 8px;">🔒 256-bit bank-grade encryption</p>
+          <p style="margin-bottom: 8px;">⚡ Instant 24x7 settlements</p>
+          <p>🛡️ Fraud monitoring active</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Mobile Bottom Tab Bar -->
+  <nav class="bottom-nav">
+    <a href="/app" class="nav-item {{if eq .Page "home"}}active{{end}}">
+      <span style="font-size: 1.25rem;">🏠</span>
+      <span>Home</span>
+    </a>
+    <a href="/app/send" class="nav-item {{if eq .Page "send"}}active{{end}}">
+      <span style="font-size: 1.25rem;">💸</span>
+      <span>Send</span>
+    </a>
+    <a href="/app/request" class="nav-item {{if eq .Page "request"}}active{{end}}">
+      <span style="font-size: 1.25rem;">🤲</span>
+      <span>Request</span>
+    </a>
+    <a href="/app/activity" class="nav-item {{if eq .Page "activity"}}active{{end}}">
+      <span style="font-size: 1.25rem;">📊</span>
+      <span>Activity</span>
+    </a>
+    <a href="/app/banks" class="nav-item {{if eq .Page "banks"}}active{{end}}">
+      <span style="font-size: 1.25rem;">🏦</span>
+      <span>Banks</span>
+    </a>
+    <a href="/app/profile" class="nav-item {{if eq .Page "profile"}}active{{end}}">
+      <span style="font-size: 1.25rem;">👤</span>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <script>
+    async function submitQuickSend(form) {
+      const handle = form.to_handle.value;
+      const amtRupees = parseFloat(form.amount_rupees.value);
+      const note = form.note.value;
+      if (!handle || isNaN(amtRupees) || amtRupees <= 0) return;
+
+      const amountPaise = Math.round(amtRupees * 100);
+      try {
+        const res = await fetch('/api/v1/transfers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to_handle: handle, amount_paise: amountPaise, note: note })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast('Transfer completed successfully!');
+          window.location.reload();
+        } else {
+          showToast(data.error?.message || 'Transfer failed', 'error');
+        }
+      } catch (err) {
+        showToast('Network error', 'error');
+      }
+    }
+  </script>
+</body>
+</html>
+{{end}}
